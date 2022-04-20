@@ -3,14 +3,14 @@ import {FiBell, FiHome, FiMenu} from "react-icons/fi";
 import {FC, ReactText, Ref} from "react";
 import {IconType} from "react-icons";
 import {
-	GiChestArmor,
 	GiBiceps,
 	GiBlackBook,
+	GiChestArmor,
 	GiChoice,
 	GiCrystalWand,
 	GiDiceTarget,
+	GiPerson,
 	GiSchoolBag,
-	GiPerson
 } from "react-icons/gi";
 import {
 	Box,

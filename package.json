@@ -13,6 +13,7 @@
 		"@emotion/styled": "11",
 		"@tanstack/react-location": "^3.7.4",
 		"axios": "^0.26.1",
+		"dexie": "^3.2.1",
 		"framer-motion": "6",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
