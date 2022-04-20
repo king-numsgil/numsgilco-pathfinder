@@ -88,6 +88,12 @@ const SidebarContent: FC<SidebarContentProps> = ({onClose, ...rest}) => {
 		w={{base: "full", md: 60}}
 		pos="fixed"
 		h="full"
+		css={{
+			"&::-webkit-scrollbar": {
+				display: "none",
+			},
+		}}
+		overflowY="scroll"
 		{...rest}
 	>
 		<Flex h={20} alignItems="center" mx={8} justifyContent="space-between">
@@ -155,7 +161,7 @@ const NavItem: FC<NavItemProps> = ({icon, children, link, ...rest}) =>
 	>
 		{({isActive}) => <Flex
 			align="center"
-			p={2}
+			p={4}
 			mr={4}
 			borderRightRadius="lg"
 			role="group"
@@ -170,7 +176,7 @@ const NavItem: FC<NavItemProps> = ({icon, children, link, ...rest}) =>
 		>
 			{icon && (
 				<Icon
-					mr={2}
+					mr={4}
 					fontSize={18}
 					_groupHover={{
 						color: "white",
