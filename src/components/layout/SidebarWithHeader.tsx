@@ -155,21 +155,22 @@ const NavItem: FC<NavItemProps> = ({icon, children, link, ...rest}) =>
 	>
 		{({isActive}) => <Flex
 			align="center"
-			p={4}
+			p={2}
 			mr={4}
 			borderRightRadius="lg"
 			role="group"
 			cursor="pointer"
-			bg={isActive ? "teal.400" : undefined}
+			bg={isActive ? "orange.500" : undefined}
+			color={isActive ? "white" : undefined}
 			_hover={{
-				bg: "cyan.400",
+				bg: "yellow.500",
 				color: "white",
 			}}
 			{...rest}
 		>
 			{icon && (
 				<Icon
-					mr={4}
+					mr={2}
 					fontSize={18}
 					_groupHover={{
 						color: "white",
