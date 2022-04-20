@@ -1,4 +1,4 @@
-import {Link as BaseLocationLink, LinkProps} from "@tanstack/react-location";
+import {Link as BaseLocationLink, LinkProps, Updater, UseGeneric} from "@tanstack/react-location";
 import {FiBell, FiHome, FiMenu} from "react-icons/fi";
 import {FC, ReactText, Ref} from "react";
 import {IconType} from "react-icons";
@@ -31,7 +31,6 @@ import {
 
 import {ColorModeToggle} from "./ColorModeButton";
 import {RouteGenerics} from "pages";
-import {Updater, UseGeneric} from "@tanstack/react-location/src";
 
 // from https://chakra-templates.dev/
 
