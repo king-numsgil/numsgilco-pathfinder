@@ -1,15 +1,12 @@
 import {MakeGenerics, Navigate, Outlet, Route, useRouter} from "@tanstack/react-location";
-import {IconType} from "react-icons";
 import {FC} from "react";
 
 import {SidebarWithHeader} from "components/layout";
 import Home from "./Home";
+import Hero from "./hero";
 
 export type RouteGenerics = MakeGenerics<{
-	RouteMeta: {
-		name: string;
-		icon: IconType;
-	}
+	RouteMeta: {}
 }>;
 
 const RootLayout: FC = ({children}) => {
@@ -18,9 +15,7 @@ const RootLayout: FC = ({children}) => {
 		return <Navigate<RouteGenerics> to="/home" replace />;
 	}
 
-	return <SidebarWithHeader>
-		{children}
-	</SidebarWithHeader>;
+	return <SidebarWithHeader>{children}</SidebarWithHeader>;
 };
 
 export const routes: Array<Route<RouteGenerics>> = [
@@ -29,6 +24,7 @@ export const routes: Array<Route<RouteGenerics>> = [
 		element: <RootLayout><Outlet /></RootLayout>,
 		children: [
 			Home,
+			Hero,
 		],
 	},
 ];

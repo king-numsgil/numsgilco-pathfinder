@@ -2,19 +2,19 @@ import {Route} from "@tanstack/react-location";
 import {Helmet} from "react-helmet-async";
 import {VFC} from "react";
 
-import {RouteGenerics} from "./index";
+import {RouteGenerics} from "../index";
 
 const Page: VFC = () => {
 	return <>
 		<Helmet>
-			<title>Home - Numsgil Co</title>
+			<title>Hero Stats - Numsgil Co</title>
 		</Helmet>
-		<p>Home</p>
+		<p>Hero Stats</p>
 	</>;
 };
 
 const route: Route<RouteGenerics> = {
-	path: "home",
+	path: "stats",
 	element: <Page />,
 	meta: {},
 };

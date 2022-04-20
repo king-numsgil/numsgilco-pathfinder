@@ -9,7 +9,8 @@ import {
 	GiChoice,
 	GiCrystalWand,
 	GiDiceTarget,
-	GiSchoolBag
+	GiSchoolBag,
+	GiPerson
 } from "react-icons/gi";
 import {
 	Box,
@@ -103,6 +104,7 @@ const SidebarContent: FC<SidebarContentProps> = ({onClose, ...rest}) => {
 			<CloseButton display={{base: "flex", md: "none"}} onClick={onClose} />
 		</Flex>
 		<NavItem icon={FiHome} link={{to: "/home"}}>Home</NavItem>
+		<NavItem icon={GiPerson} link={{to: "/hero", activeOptions: {exact: true}}}>Heros</NavItem>
 
 		<Text
 			px={4}
