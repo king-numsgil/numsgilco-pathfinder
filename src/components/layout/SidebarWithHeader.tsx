@@ -1,6 +1,6 @@
 import {Link as BaseLocationLink, LinkProps, Updater, UseGeneric} from "@tanstack/react-location";
 import {FiBell, FiHome, FiMenu} from "react-icons/fi";
-import {FC, ReactText, Ref} from "react";
+import {FC, PropsWithChildren, ReactText, Ref} from "react";
 import {IconType} from "react-icons";
 import {
 	GiBiceps,
@@ -39,7 +39,7 @@ const LocationLink: FC<LinkProps<RouteGenerics>> = ({children, ...props}) =>
 
 const Link = chakra(LocationLink);
 
-export const SidebarWithHeader: FC = ({children}) => {
+export const SidebarWithHeader: FC<PropsWithChildren<{}>> = ({children}) => {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	return <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
 		<SidebarContent

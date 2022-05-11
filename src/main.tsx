@@ -1,7 +1,7 @@
 import {createBrowserHistory, Outlet, ReactLocation, Router} from "@tanstack/react-location";
 import {ChakraProvider, ColorModeScript} from "@chakra-ui/react";
 import {HelmetProvider} from 'react-helmet-async';
-import ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 import React from "react";
 
 import {RouteGenerics, routes} from "pages";
@@ -11,7 +11,8 @@ const location = new ReactLocation<RouteGenerics>({
 	history: createBrowserHistory(),
 });
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root")!);
+root.render(
 	<React.StrictMode>
 		<ChakraProvider theme={theme} resetCSS>
 			<HelmetProvider>
@@ -21,6 +22,5 @@ ReactDOM.render(
 				</Router>
 			</HelmetProvider>
 		</ChakraProvider>
-	</React.StrictMode>,
-	document.getElementById("root")
+	</React.StrictMode>
 );
