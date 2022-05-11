@@ -11,8 +11,7 @@ const location = new ReactLocation<RouteGenerics>({
 	history: createBrowserHistory(),
 });
 
-const root = createRoot(document.getElementById("root")!);
-root.render(
+createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<ChakraProvider theme={theme} resetCSS>
 			<HelmetProvider>
