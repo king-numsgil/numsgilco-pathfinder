@@ -97,15 +97,15 @@ export interface ICombatant {
 export interface IEncounter {
 	id?: number;
 	name: string;
-	participants: {
-		[id: number] : {
-			initiativeRoll: number;
-			temporaryHealth: number;
-			nonlethalDamage: number;
-			lethalDamage: number;
-			conditions: Array<Condition>;
-		};
-	};
+	participants: Array<{
+		id: number;
+		initiativeRoll: number;
+		temporaryHealth: number;
+		nonlethalDamage: number;
+		lethalDamage: number;
+		conditions: Array<Condition>;
+		linkedWith?: number;
+	}>;
 }
 
 class PathfinderDatabase extends Dexie {

@@ -18,18 +18,18 @@ export class Combatant implements ICombatant {
 export class Encounter implements IEncounter {
 	id?: number;
 	name: string;
-	participants: {
-		[id: number]: {
-			initiativeRoll: number;
-			temporaryHealth: number;
-			nonlethalDamage: number;
-			lethalDamage: number;
-			conditions: Array<Condition>
-		};
-	};
+	participants: Array<{
+		id: number;
+		initiativeRoll: number;
+		temporaryHealth: number;
+		nonlethalDamage: number;
+		lethalDamage: number;
+		conditions: Array<Condition>;
+		linkedWith?: number;
+	}>;
 
 	constructor(name: string) {
 		this.name = name;
-		this.participants = {};
+		this.participants = [];
 	}
 }
