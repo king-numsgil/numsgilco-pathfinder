@@ -2,7 +2,7 @@ import {Button, Input, InputGroup, InputGroupProps, InputRightElement, useToast}
 import {Dice} from "dice-typescript";
 import {FC, useState} from "react";
 
-export const DiceFormulae: FC<InputGroupProps> = props => {
+export const DiceFormula: FC<InputGroupProps> = props => {
 	const toast = useToast();
 	const [formulae, setFormulae] = useState<string>("");
 	const dice = new Dice();
