@@ -1,5 +1,5 @@
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useState, FC} from "react";
+import {FC, useState} from "react";
 import {
 	Box,
 	Button,

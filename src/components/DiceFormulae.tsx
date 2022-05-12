@@ -1,8 +1,8 @@
-import {Button, Input, InputGroup, InputRightElement, useToast} from "@chakra-ui/react";
+import {Button, Input, InputGroup, InputGroupProps, InputRightElement, useToast} from "@chakra-ui/react";
 import {Dice} from "dice-typescript";
 import {FC, useState} from "react";
 
-export const DiceFormulae: FC = () => {
+export const DiceFormulae: FC<InputGroupProps> = props => {
 	const toast = useToast();
 	const [formulae, setFormulae] = useState<string>("");
 	const dice = new Dice();
@@ -30,7 +30,7 @@ export const DiceFormulae: FC = () => {
 		}
 	};
 
-	return <InputGroup size="md">
+	return <InputGroup size="md" {...props}>
 		<Input
 			pr="4.5rem"
 			type="text"
