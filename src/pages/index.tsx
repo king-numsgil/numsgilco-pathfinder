@@ -2,6 +2,7 @@ import {MakeGenerics, Navigate, Outlet, Route, useRouter} from "@tanstack/react-
 import {FC, PropsWithChildren} from "react";
 
 import {SidebarWithHeader} from "components/layout";
+import Combat from "./combat";
 import Home from "./Home";
 import Hero from "./hero";
 
@@ -23,6 +24,7 @@ export const routes: Array<Route<RouteGenerics>> = [
 		path: "/",
 		element: <RootLayout><Outlet /></RootLayout>,
 		children: [
+			Combat,
 			Home,
 			Hero,
 		],
