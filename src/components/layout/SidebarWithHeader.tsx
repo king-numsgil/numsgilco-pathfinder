@@ -1,6 +1,6 @@
 import {Link as BaseLocationLink, LinkProps, Updater, UseGeneric} from "@tanstack/react-location";
 import {FiBell, FiHome, FiMenu} from "react-icons/fi";
-import {FC, PropsWithChildren, ReactText, Ref} from "react";
+import {FC, PropsWithChildren, Ref} from "react";
 import {IconType} from "react-icons";
 import {
 	GiBiceps,
@@ -126,7 +126,7 @@ const SidebarContent: FC<SidebarContentProps> = ({onClose, ...rest}) => {
 
 interface NavItemProps extends FlexProps {
 	icon?: IconType;
-	children: ReactText;
+	children: string;
 	link: {
 		// The absolute or relative destination pathname
 		to?: string | number | null;

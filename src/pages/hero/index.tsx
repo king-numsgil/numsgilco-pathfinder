@@ -1,6 +1,6 @@
 import {Outlet, Route} from "@tanstack/react-location";
 import {Helmet} from "react-helmet-async";
-import {VFC} from "react";
+import {FC} from "react";
 
 import {RouteGenerics} from "../index";
 import Background from "./Background";
@@ -11,7 +11,7 @@ import Inventory from "./Inventory";
 import Spells from "./Spells";
 import Stats from "./Stats";
 
-const Page: VFC = () => {
+const Page: FC = () => {
 	return <>
 		<Helmet>
 			<title>Hero Editor - Numsgil Co</title>

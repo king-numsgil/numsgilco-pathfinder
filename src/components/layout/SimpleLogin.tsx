@@ -1,5 +1,5 @@
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useState, VFC} from "react";
+import {useState, FC} from "react";
 import {
 	Box,
 	Button,
@@ -25,7 +25,7 @@ export interface SimpleLoginProps {
 	onSubmit: (data: LoginData) => Promise<void>;
 }
 
-export const SimpleLogin: VFC<SimpleLoginProps> = props => {
+export const SimpleLogin: FC<SimpleLoginProps> = props => {
 	const {register, handleSubmit, formState: {errors}} = useForm<LoginData>();
 	const [isWorking, setWorking] = useState(false);
 

@@ -1,10 +1,10 @@
 import {Route} from "@tanstack/react-location";
 import {Helmet} from "react-helmet-async";
-import {VFC} from "react";
+import {FC} from "react";
 
 import {RouteGenerics} from "./index";
 
-const Page: VFC = () => {
+const Page: FC = () => {
 	return <>
 		<Helmet>
 			<title>Home - Numsgil Co</title>
