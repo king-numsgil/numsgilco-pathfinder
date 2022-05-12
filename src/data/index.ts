@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 
-import {Combatant} from "./combatants";
+import {Combatant, Encounter} from "./combat";
 import {Feat} from "./feats";
 
 export type FeatType = "General" | "Combat" | "Item Creation" | "Metamagic" | "Achievement" | "Story" | "Mythic";
@@ -89,20 +89,28 @@ export enum Condition {
 export interface ICombatant {
 	id?: number;
 	name: string;
-	initiative: {
-		modifier: number;
-		roll: number;
-	};
+	initiative: number;
 	maxHealth: number;
-	temporaryHealth: number;
-	nonlethalDamage: number;
-	lethalDamage: number;
 	type: "ally" | "enemy";
-	conditions: Array<Condition>;
+}
+
+export interface IEncounter {
+	id?: number;
+	name: string;
+	participants: {
+		[id: number] : {
+			initiativeRoll: number;
+			temporaryHealth: number;
+			nonlethalDamage: number;
+			lethalDamage: number;
+			conditions: Array<Condition>;
+		};
+	};
 }
 
 class PathfinderDatabase extends Dexie {
 	public combatants!: Dexie.Table<ICombatant, number>;
+	public encounters!: Dexie.Table<IEncounter, number>;
 	public feats!: Dexie.Table<IFeat, number>;
 
 	constructor() {
@@ -110,14 +118,16 @@ class PathfinderDatabase extends Dexie {
 
 		this.version(1).stores({
 			combatants: "++id, name",
+			encounters: "++id, name",
 			feats: "++id, name, type, *extendedTypes",
 		});
 		this.combatants.mapToClass(Combatant);
+		this.encounters.mapToClass(Encounter);
 		this.feats.mapToClass(Feat);
 	}
 }
 
 export const pfdb = new PathfinderDatabase();
 
-export {Combatant} from "./combatants";
+export {Combatant, Encounter} from "./combat";
 export {Feat} from "./feats";
