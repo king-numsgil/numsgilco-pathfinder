@@ -100,7 +100,7 @@ export interface ICombatant {
 	conditions: Array<Condition>;
 }
 
-export class PathfinderDatabase extends Dexie {
+class PathfinderDatabase extends Dexie {
 	public combatants!: Dexie.Table<ICombatant, number>;
 	public feats!: Dexie.Table<IFeat, number>;
 
@@ -115,6 +115,8 @@ export class PathfinderDatabase extends Dexie {
 		this.feats.mapToClass(Feat);
 	}
 }
+
+export const pfdb = new PathfinderDatabase();
 
 export {Combatant} from "./combatants";
 export {Feat} from "./feats";
