@@ -97,6 +97,7 @@ export interface ICombatant {
 	temporaryHealth: number;
 	nonlethalDamage: number;
 	lethalDamage: number;
+	type: "ally" | "enemy";
 	conditions: Array<Condition>;
 }
 
