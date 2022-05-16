@@ -1,16 +1,17 @@
 import {Outlet, Route} from "@tanstack/react-location";
 import {useLiveQuery} from "dexie-react-hooks";
-import {Helmet} from "react-helmet-async";
-import {set, useForm} from "react-hook-form";
-import {FaPen} from "react-icons/all";
 import {FC, useEffect, useState} from "react";
+import {Helmet} from "react-helmet-async";
+import {useForm} from "react-hook-form";
+import {FaPen} from "react-icons/all";
 import {
 	Button,
 	ButtonGroup,
 	Flex,
 	FormControl,
 	FormErrorMessage,
-	FormLabel, IconButton,
+	FormLabel,
+	IconButton,
 	Input,
 	Modal,
 	ModalBody,
@@ -27,12 +28,13 @@ import {
 	Select,
 	Text,
 	useDisclosure,
-	UseModalProps, useToast
+	UseModalProps,
+	useToast
 } from "@chakra-ui/react";
 
 import {DiceFormula} from "components/DiceFormula";
-import {RouteGenerics} from "../index";
 import {Encounter, ICombatant, pfdb} from "data";
+import {RouteGenerics} from "../index";
 
 interface CombatantFormProps {
 	combatantId: number;
@@ -154,9 +156,13 @@ const CombatantsModal: FC<CombatantsModalProps & UseModalProps> = ({selectCombat
 						mt={1}
 						key={value.id}
 					>
-						<Text>{value.name} - {value.maxHealth}HP ({value.initiative > 0 ? "+" : ""}{value.initiative}) - {value.type}</Text>
+						<Text>{value.name} - {value.maxHealth}HP ({value.initiative > 0 ? "+" : ""}{value.initiative})
+							- {value.type}</Text>
 						<ButtonGroup isAttached size="sm" variant="outline">
-							<IconButton aria-label="Edit" icon={<FaPen />} onClick={() => { setEditing(value.id ?? 0); onOpen();}} />
+							<IconButton aria-label="Edit" icon={<FaPen />} onClick={() => {
+								setEditing(value.id ?? 0);
+								onOpen();
+							}} />
 							<Button size="sm" variant="outline" onClick={() => selectCombatant(value.id ?? 0)}>
 								Add to Encounter
 							</Button>
@@ -167,7 +173,10 @@ const CombatantsModal: FC<CombatantsModalProps & UseModalProps> = ({selectCombat
 					<Button colorScheme="blue" mr={3} onClick={props.onClose}>
 						Close
 					</Button>
-					<Button variant="ghost" onClick={() => { setEditing(0); onOpen();}}>
+					<Button variant="ghost" onClick={() => {
+						setEditing(0);
+						onOpen();
+					}}>
 						Create Combatant
 					</Button>
 				</ModalFooter>
