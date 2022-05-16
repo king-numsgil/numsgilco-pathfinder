@@ -3,7 +3,7 @@ import {useLiveQuery} from "dexie-react-hooks";
 import {FC, useEffect, useState} from "react";
 import {Helmet} from "react-helmet-async";
 import {useForm} from "react-hook-form";
-import {FaPen} from "react-icons/all";
+import {FaPen, FaTrash} from "react-icons/all";
 import {
 	Button,
 	ButtonGroup,
@@ -139,7 +139,9 @@ interface CombatantsModalProps {
 }
 
 const CombatantsModal: FC<CombatantsModalProps & UseModalProps> = ({selectCombatant, ...props}) => {
-	const combatants = useLiveQuery(() => pfdb.combatants.toArray());
+	const combatants = useLiveQuery(() =>
+		pfdb.combatants.toArray().then(value => value.sort((a, b) => a.name.localeCompare(b.name)))
+	);
 	const [editing, setEditing] = useState<number>(0);
 	const {isOpen, onOpen, onClose} = useDisclosure();
 
@@ -162,6 +164,11 @@ const CombatantsModal: FC<CombatantsModalProps & UseModalProps> = ({selectCombat
 							<IconButton aria-label="Edit" icon={<FaPen />} onClick={() => {
 								setEditing(value.id ?? 0);
 								onOpen();
+							}} />
+							<IconButton aria-label="Delete" icon={<FaTrash />} onClick={() => {
+								if (value.id) {
+									pfdb.combatants.delete(value.id).catch(console.error);
+								}
 							}} />
 							<Button size="sm" variant="outline" onClick={() => selectCombatant(value.id ?? 0)}>
 								Add to Encounter
