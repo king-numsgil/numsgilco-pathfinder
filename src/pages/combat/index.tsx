@@ -1,10 +1,11 @@
+import {FaChevronLeft, FaChevronRight, FaPen, FaPlay, FaStop, FaTrash} from "react-icons/all";
 import {Outlet, Route} from "@tanstack/react-location";
 import {useLiveQuery} from "dexie-react-hooks";
-import {FaPen, FaTrash} from "react-icons/all";
 import {FC, useEffect, useState} from "react";
 import {Helmet} from "react-helmet-async";
 import {useForm} from "react-hook-form";
 import {
+	Box,
 	Button,
 	ButtonGroup,
 	Editable,
@@ -36,7 +37,7 @@ import {
 } from "@chakra-ui/react";
 
 import {DiceFormula} from "components/DiceFormula";
-import {Encounter, ICombatant, pfdb} from "data";
+import {Condition, Encounter, ICombatant, pfdb} from "data";
 import {RouteGenerics} from "../index";
 
 interface CombatantFormProps {
@@ -44,7 +45,15 @@ interface CombatantFormProps {
 }
 
 const CombatantFormModal: FC<CombatantFormProps & UseModalProps> = ({combatantId, ...props}) => {
-	const {register, reset, clearErrors, handleSubmit, formState: {errors, isSubmitting}} = useForm<ICombatant>();
+	const {register, reset, clearErrors, handleSubmit, formState: {errors, isSubmitting}} = useForm<ICombatant>({
+		defaultValues: {
+			id: undefined,
+			name: "",
+			initiative: 0,
+			maxHealth: 1,
+			type: "ally",
+		},
+	});
 
 	useEffect(() => {
 		clearErrors();
@@ -59,7 +68,7 @@ const CombatantFormModal: FC<CombatantFormProps & UseModalProps> = ({combatantId
 		} else {
 			pfdb.combatants.get(combatantId).then(reset).catch(console.error);
 		}
-	}, [combatantId]);
+	}, [props.isOpen]);
 
 	async function onSubmit(value: ICombatant) {
 		if (value.id === undefined) {
@@ -252,13 +261,24 @@ const EncounterModal: FC<EncounterModalProps & UseModalProps> = ({selectEncounte
 	</Modal>;
 }
 
+interface ParticipantInfo {
+	combatant: ICombatant;
+	initiativeRoll: number;
+	temporaryHealth: number;
+	nonlethalDamage: number;
+	lethalDamage: number;
+	conditions: Array<Condition>;
+	linkedWith?: number;
+}
+
 const Page: FC = () => {
-	const [encounterId, setEncounterId] = useState<number>(0)
+	const [encounterStarted, setEncounterStarted] = useState<boolean>(false);
+	const [encounterId, setEncounterId] = useState<number>(0);
 	const combatantsDisclosure = useDisclosure();
 	const encountersDisclosure = useDisclosure();
 	const toast = useToast();
 
-	const encounter = useLiveQuery(async () => await pfdb.encounters.get(encounterId) as Encounter);
+	const encounter = useLiveQuery(async () => await pfdb.encounters.get(encounterId) as Encounter, [encounterId]);
 
 	const selectCombatant = (id: number) => {
 		if (encounter === undefined) {
@@ -270,7 +290,12 @@ const Page: FC = () => {
 				duration: 2500,
 			});
 		} else {
+			encounter.addCombatant(id).catch(console.error);
 		}
+	};
+
+	const startEncounter = async () => {
+		setEncounterStarted(true);
 	};
 
 	return <>
@@ -289,6 +314,39 @@ const Page: FC = () => {
 					</Button>
 				</ButtonGroup>
 			</Flex>
+			{encounter === undefined && <Text as="h3" textAlign="center">No Encounter Loaded</Text>}
+			{encounter !== undefined && <>
+				<Flex direction="row" justifyContent="center" alignItems="center">
+					<Text as="h3" mx={3}>{encounter.name}</Text>
+					<ButtonGroup isAttached size="sm" variant="outline">
+						<IconButton
+							aria-label="Start"
+							icon={<FaPlay />}
+							disabled={encounterStarted}
+							onClick={startEncounter}
+						/>
+						<IconButton
+							aria-label="Stop"
+							icon={<FaStop />}
+							disabled={!encounterStarted}
+							onClick={() => setEncounterStarted(false)}
+						/>
+						<IconButton
+							aria-label="Previous"
+							icon={<FaChevronLeft />}
+							disabled={!encounterStarted}
+						/>
+						<IconButton
+							aria-label="Next"
+							icon={<FaChevronRight />}
+							disabled={!encounterStarted}
+						/>
+					</ButtonGroup>
+				</Flex>
+				{encounter.participants.map((info, index) => {
+					return <Text key={index}>{info.combatant.name}</Text>;
+				})}
+			</>}
 		</Flex>
 		<CombatantsModal
 			selectCombatant={selectCombatant}
@@ -296,7 +354,10 @@ const Page: FC = () => {
 			onClose={combatantsDisclosure.onClose}
 		/>
 		<EncounterModal
-			selectEncounter={(id) => setEncounterId(id)}
+			selectEncounter={(id) => {
+				setEncounterStarted(false);
+				setEncounterId(id);
+			}}
 			isOpen={encountersDisclosure.isOpen}
 			onClose={encountersDisclosure.onClose}
 		/>
