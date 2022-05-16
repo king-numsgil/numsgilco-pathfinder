@@ -15,7 +15,9 @@ import {
 	FormErrorMessage,
 	FormLabel,
 	IconButton,
-	Input, InputGroup, InputRightElement,
+	Input,
+	InputGroup,
+	InputRightElement,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
@@ -24,7 +26,8 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Select,
-	Text, useColorModeValue,
+	Text,
+	useColorModeValue,
 	useDisclosure,
 	UseModalProps,
 	useToast
@@ -317,7 +320,7 @@ const Page: FC = () => {
 		}
 	};
 
-	const ParticipantItem: FC<{info: IParticipant, index: number}> = ({info, index}) => {
+	const ParticipantItem: FC<{ info: IParticipant, index: number }> = ({info, index}) => {
 		const [damage, setDamage] = useState<number>(0);
 
 		const applyDamage = async () => {
@@ -359,7 +362,8 @@ const Page: FC = () => {
 				p={3}
 			>
 				<Text textAlign="center">{info.combatant.name}</Text>
-				<Text fontSize="small">Initiative Modifier: {info.combatant.initiative > 0 ? "+" : ""}{info.combatant.initiative}</Text>
+				<Text fontSize="small">Initiative
+					Modifier: {info.combatant.initiative > 0 ? "+" : ""}{info.combatant.initiative}</Text>
 			</Flex>
 			<Flex
 				direction="column"
