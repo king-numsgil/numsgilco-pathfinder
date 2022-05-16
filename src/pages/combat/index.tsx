@@ -23,11 +23,6 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
-	NumberDecrementStepper,
-	NumberIncrementStepper,
-	NumberInput,
-	NumberInputField,
-	NumberInputStepper,
 	Select,
 	Text, useColorModeValue,
 	useDisclosure,
@@ -101,35 +96,35 @@ const CombatantFormModal: FC<CombatantFormProps & UseModalProps> = ({combatantId
 					</FormControl>
 					<FormControl isInvalid={errors.initiative !== undefined}>
 						<FormLabel htmlFor="initiative">Initiative Modifier</FormLabel>
-						<NumberInput
-							min={-20}
-							max={20}
+						<Input
+							type="number"
 							id="initiative"
-							{...register("initiative")}
-						>
-							<NumberInputField />
-							<NumberInputStepper>
-								<NumberIncrementStepper />
-								<NumberDecrementStepper />
-							</NumberInputStepper>
-						</NumberInput>
+							{...register("initiative", {
+								min: {value: -20, message: "Initiative modifier can't be lower than -20"},
+								max: {value: 20, message: "Initiative modifier can't be higher than 20"},
+								valueAsNumber: true,
+							})}
+						/>
+						<FormErrorMessage>
+							{errors.initiative && errors.initiative.message}
+						</FormErrorMessage>
 					</FormControl>
 					<FormControl isInvalid={errors.maxHealth !== undefined}>
 						<FormLabel htmlFor="maxHealth">Maximum HP</FormLabel>
-						<NumberInput
-							min={1}
+						<Input
+							type="number"
 							id="maxHealth"
-							{...register("maxHealth")}
-						>
-							<NumberInputField />
-							<NumberInputStepper>
-								<NumberIncrementStepper />
-								<NumberDecrementStepper />
-							</NumberInputStepper>
-						</NumberInput>
+							{...register("maxHealth", {
+								min: {value: 1, message: "Maximum Health can't be lower than 1"},
+								valueAsNumber: true,
+							})}
+						/>
+						<FormErrorMessage>
+							{errors.maxHealth && errors.maxHealth.message}
+						</FormErrorMessage>
 					</FormControl>
-					<FormControl isInvalid={errors.type !== undefined}>
-						<FormLabel htmlFor="type">Maximum HP</FormLabel>
+					<FormControl>
+						<FormLabel htmlFor="type">Combatant Type</FormLabel>
 						<Select id="type" {...register("type")}>
 							<option value="ally">Ally</option>
 							<option value="enemy">Enemy</option>
@@ -375,7 +370,7 @@ const Page: FC = () => {
 			>
 				<Text textAlign="center">Initiative</Text>
 				<Text fontSize="larger" fontWeight="bold" textAlign="center">
-					{info.initiativeRoll === 0 ? 0 : info.initiativeRoll + info.combatant.initiative}
+					{info.initiativeRoll === 0 ? 0 : parseInt(String(info.initiativeRoll)) + parseInt(String(info.combatant.initiative))}
 				</Text>
 			</Flex>
 			<Flex
@@ -400,6 +395,7 @@ const Page: FC = () => {
 								applyDamage().catch(console.error);
 							}
 						}}
+						onFocus={e => e.target.select()}
 					/>
 					<InputRightElement width="4.7rem">
 						<ButtonGroup isAttached size="sm" h="1.75rem">
