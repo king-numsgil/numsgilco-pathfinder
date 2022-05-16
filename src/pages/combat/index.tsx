@@ -1,11 +1,10 @@
-import {FaChevronLeft, FaChevronRight, FaPen, FaPlay, FaStop, FaTrash} from "react-icons/all";
+import {FaChevronLeft, FaChevronRight, FaMinus, FaPen, FaPlay, FaPlus, FaStop, FaTrash} from "react-icons/all";
 import {Outlet, Route} from "@tanstack/react-location";
 import {useLiveQuery} from "dexie-react-hooks";
 import {FC, useEffect, useState} from "react";
 import {Helmet} from "react-helmet-async";
 import {useForm} from "react-hook-form";
 import {
-	Box,
 	Button,
 	ButtonGroup,
 	Editable,
@@ -16,7 +15,7 @@ import {
 	FormErrorMessage,
 	FormLabel,
 	IconButton,
-	Input,
+	Input, InputGroup, InputRightElement,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
@@ -30,7 +29,7 @@ import {
 	NumberInputField,
 	NumberInputStepper,
 	Select,
-	Text,
+	Text, useColorModeValue,
 	useDisclosure,
 	UseModalProps,
 	useToast
@@ -261,6 +260,31 @@ const EncounterModal: FC<EncounterModalProps & UseModalProps> = ({selectEncounte
 	</Modal>;
 }
 
+interface IParticipant {
+	combatant: {
+		name: string;
+		initiative: number;
+		maxHealth: number;
+		type: "ally" | "enemy";
+	};
+	initiativeRoll: number;
+	temporaryHealth: number;
+	nonlethalDamage: number;
+	lethalDamage: number;
+	conditions: Array<Condition>;
+	linkedParticipants: Array<{
+		combatant: {
+			name: string;
+			initiative: number;
+			maxHealth: number;
+		};
+		temporaryHealth: number;
+		nonlethalDamage: number;
+		lethalDamage: number;
+		conditions: Array<Condition>;
+	}>;
+}
+
 const Page: FC = () => {
 	const [encounterStarted, setEncounterStarted] = useState<boolean>(false);
 	const [encounterId, setEncounterId] = useState<number>(0);
@@ -286,6 +310,77 @@ const Page: FC = () => {
 
 	const startEncounter = async () => {
 		setEncounterStarted(true);
+	};
+
+	const ParticipantItem: FC<{info: IParticipant, index: number}> = ({info, index}) => {
+		const [damage, setDamage] = useState<number>(0);
+
+		const applyDamage = async () => {
+			if (encounter) {
+				encounter.participants[index].lethalDamage += damage;
+				setDamage(0);
+				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
+			}
+		};
+
+		const applyHeal = async () => {
+			if (encounter) {
+				encounter.participants[index].lethalDamage -= damage;
+				if (encounter.participants[index].lethalDamage < 0) {
+					encounter.participants[index].lethalDamage = 0;
+				}
+				setDamage(0);
+				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
+			}
+		};
+
+		return <Flex
+			direction="row"
+			m={2}
+			borderColor={useColorModeValue("gray.400", "gray.600")}
+			borderWidth="1px"
+			borderRadius={8}
+		>
+			<Flex
+				direction="column"
+				justifyContent="center"
+				borderColor={useColorModeValue("gray.400", "gray.600")}
+				borderRightWidth="1px"
+				p={3}
+			>
+				<Text textAlign="center">{info.combatant.name}</Text>
+				<Text fontSize="small">Initiative Modifier: {info.combatant.initiative > 0 ? "+" : ""}{info.combatant.initiative}</Text>
+			</Flex>
+			<Flex
+				direction="column"
+				borderColor={useColorModeValue("gray.400", "gray.600")}
+				borderRightWidth="1px"
+				p={1}
+			>
+				<Text>Current Health: {info.combatant.maxHealth - info.lethalDamage}/{info.combatant.maxHealth}</Text>
+				<InputGroup size="md">
+					<Input
+						pr=".5rem"
+						type="number"
+						min={0}
+						value={damage}
+						onChange={e => setDamage(parseInt(e.target.value))}
+						onKeyDown={e => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								applyDamage().catch(console.error);
+							}
+						}}
+					/>
+					<InputRightElement width="4.7rem">
+						<ButtonGroup isAttached size="sm" h="1.75rem">
+							<IconButton h="1.75rem" aria-label="Heal" icon={<FaPlus />} onClick={applyHeal} />
+							<IconButton h="1.75rem" aria-label="Damage" icon={<FaMinus />} onClick={applyDamage} />
+						</ButtonGroup>
+					</InputRightElement>
+				</InputGroup>
+			</Flex>
+		</Flex>
 	};
 
 	return <>
@@ -333,9 +428,7 @@ const Page: FC = () => {
 						/>
 					</ButtonGroup>
 				</Flex>
-				{encounter.participants.map((info, index) => {
-					return <Text key={index}>{info.combatant.name}</Text>;
-				})}
+				{encounter.participants.map((info, index) => <ParticipantItem key={index} info={info} index={index} />)}
 			</>}
 		</Flex>
 		<CombatantsModal
