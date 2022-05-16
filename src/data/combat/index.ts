@@ -1,25 +1,15 @@
-import {Condition, ICombatant, IEncounter} from "../index";
-
-export class Combatant implements ICombatant {
-	id?: number;
-	name: string;
-	initiative: number
-	maxHealth: number;
-	type: "ally" | "enemy";
-
-	constructor(name: string, maxHealth: number, initiative: number, type: "ally" | "enemy") {
-		this.name = name;
-		this.type = type;
-		this.initiative = initiative;
-		this.maxHealth = maxHealth;
-	}
-}
+import {Condition, IEncounter, pfdb} from "../index";
 
 export class Encounter implements IEncounter {
 	id?: number;
 	name: string;
 	participants: Array<{
-		id: number;
+		combatant: {
+			name: string;
+			initiative: number;
+			maxHealth: number;
+			type: "ally" | "enemy";
+		};
 		initiativeRoll: number;
 		temporaryHealth: number;
 		nonlethalDamage: number;
@@ -31,5 +21,24 @@ export class Encounter implements IEncounter {
 	constructor(name: string) {
 		this.name = name;
 		this.participants = [];
+	}
+
+	async addCombatant(id: number) {
+		const combatant = await pfdb.combatants.get(id);
+		if (combatant === undefined) {
+			throw new Error(`Combatant #${id} does not exist`);
+		}
+
+		this.participants.push({
+			combatant: {...combatant},
+			initiativeRoll: 0,
+			temporaryHealth: 0,
+			nonlethalDamage: 0,
+			lethalDamage: 0,
+			conditions: [],
+		});
+		if (this.id) {
+			await pfdb.encounters.update(this.id, {participants: this.participants});
+		}
 	}
 }

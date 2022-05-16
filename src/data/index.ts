@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 
-import {Combatant, Encounter} from "./combat";
+import {Encounter} from "./combat";
 import {Feat} from "./feats";
 
 export type FeatType = "General" | "Combat" | "Item Creation" | "Metamagic" | "Achievement" | "Story" | "Mythic";
@@ -98,7 +98,12 @@ export interface IEncounter {
 	id?: number;
 	name: string;
 	participants: Array<{
-		id: number;
+		combatant: {
+			name: string;
+			initiative: number;
+			maxHealth: number;
+			type: "ally" | "enemy";
+		};
 		initiativeRoll: number;
 		temporaryHealth: number;
 		nonlethalDamage: number;
@@ -121,7 +126,6 @@ class PathfinderDatabase extends Dexie {
 			encounters: "++id, name",
 			feats: "++id, name, type, *extendedTypes",
 		});
-		this.combatants.mapToClass(Combatant);
 		this.encounters.mapToClass(Encounter);
 		this.feats.mapToClass(Feat);
 	}
@@ -129,5 +133,5 @@ class PathfinderDatabase extends Dexie {
 
 export const pfdb = new PathfinderDatabase();
 
-export {Combatant, Encounter} from "./combat";
+export {Encounter} from "./combat";
 export {Feat} from "./feats";
