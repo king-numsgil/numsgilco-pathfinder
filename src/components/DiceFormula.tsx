@@ -38,7 +38,7 @@ export const DiceFormula: FC<InputGroupProps> = props => {
 			value={formulae}
 			onChange={event => setFormulae(event.target.value)}
 		/>
-		<InputRightElement width="4.5rem">
+		<InputRightElement width="3.7rem">
 			<Button h="1.75rem" size="sm" onClick={handleRoll}>
 				Roll
 			</Button>
