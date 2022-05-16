@@ -261,16 +261,6 @@ const EncounterModal: FC<EncounterModalProps & UseModalProps> = ({selectEncounte
 	</Modal>;
 }
 
-interface ParticipantInfo {
-	combatant: ICombatant;
-	initiativeRoll: number;
-	temporaryHealth: number;
-	nonlethalDamage: number;
-	lethalDamage: number;
-	conditions: Array<Condition>;
-	linkedWith?: number;
-}
-
 const Page: FC = () => {
 	const [encounterStarted, setEncounterStarted] = useState<boolean>(false);
 	const [encounterId, setEncounterId] = useState<number>(0);
