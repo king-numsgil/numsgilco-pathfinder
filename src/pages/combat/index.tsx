@@ -1,12 +1,15 @@
 import {Outlet, Route} from "@tanstack/react-location";
 import {useLiveQuery} from "dexie-react-hooks";
+import {FaPen, FaTrash} from "react-icons/all";
 import {FC, useEffect, useState} from "react";
 import {Helmet} from "react-helmet-async";
 import {useForm} from "react-hook-form";
-import {FaPen, FaTrash} from "react-icons/all";
 import {
 	Button,
 	ButtonGroup,
+	Editable,
+	EditableInput,
+	EditablePreview,
 	Flex,
 	FormControl,
 	FormErrorMessage,
@@ -193,9 +196,66 @@ const CombatantsModal: FC<CombatantsModalProps & UseModalProps> = ({selectCombat
 	</>;
 };
 
+interface EncounterModalProps {
+	selectEncounter: (id: number) => void;
+}
+
+const EncounterModal: FC<EncounterModalProps & UseModalProps> = ({selectEncounter, ...props}) => {
+	const encounters = useLiveQuery(() =>
+		pfdb.encounters.toArray().then(value => value
+			.map(value => value as Encounter)
+			.sort((a, b) => a.name.localeCompare(b.name))
+		)
+	);
+
+	return <Modal size="lg" autoFocus={false} {...props}>
+		<ModalOverlay />
+		<ModalContent>
+			<ModalHeader>Encounters</ModalHeader>
+			<ModalCloseButton />
+			<ModalBody>
+				{encounters?.map(value => <Flex
+					direction="row"
+					justifyContent="space-between"
+					mt={1}
+					key={value.id}
+				>
+					<Editable defaultValue={value.name} onSubmit={name => {
+						if (value.id) {
+							pfdb.encounters.update(value.id, {name});
+						}
+					}}>
+						<EditablePreview />
+						<EditableInput />
+					</Editable>
+					<ButtonGroup isAttached size="sm" variant="outline">
+						<IconButton aria-label="Delete" icon={<FaTrash />} onClick={() => {
+							if (value.id) {
+								pfdb.encounters.delete(value.id).catch(console.error);
+							}
+						}} />
+						<Button size="sm" variant="outline" onClick={() => selectEncounter(value.id ?? 0)}>
+							Load
+						</Button>
+					</ButtonGroup>
+				</Flex>)}
+			</ModalBody>
+			<ModalFooter>
+				<Button colorScheme="blue" mr={3} onClick={props.onClose}>
+					Close
+				</Button>
+				<Button variant="ghost" onClick={() => pfdb.encounters.add({name: "New Encounter", participants: []})}>
+					Create Encounter
+				</Button>
+			</ModalFooter>
+		</ModalContent>
+	</Modal>;
+}
+
 const Page: FC = () => {
 	const [encounterId, setEncounterId] = useState<number>(0)
 	const combatantsDisclosure = useDisclosure();
+	const encountersDisclosure = useDisclosure();
 	const toast = useToast();
 
 	const encounter = useLiveQuery(async () => await pfdb.encounters.get(encounterId) as Encounter);
@@ -224,7 +284,7 @@ const Page: FC = () => {
 					<Button onClick={combatantsDisclosure.onOpen}>
 						Combatants
 					</Button>
-					<Button>
+					<Button onClick={encountersDisclosure.onOpen}>
 						Encounters
 					</Button>
 				</ButtonGroup>
@@ -234,6 +294,11 @@ const Page: FC = () => {
 			selectCombatant={selectCombatant}
 			isOpen={combatantsDisclosure.isOpen}
 			onClose={combatantsDisclosure.onClose}
+		/>
+		<EncounterModal
+			selectEncounter={(id) => setEncounterId(id)}
+			isOpen={encountersDisclosure.isOpen}
+			onClose={encountersDisclosure.onClose}
 		/>
 	</>;
 };
