@@ -38,6 +38,7 @@ import {
 import {DiceFormula} from "components/DiceFormula";
 import {Condition, Encounter, ICombatant, pfdb} from "data";
 import {RouteGenerics} from "../index";
+import {Dice} from "dice-typescript";
 
 interface CombatantFormProps {
 	combatantId: number;
@@ -309,7 +310,16 @@ const Page: FC = () => {
 	};
 
 	const startEncounter = async () => {
-		setEncounterStarted(true);
+		const dice = new Dice();
+		if (encounter) {
+			encounter.participants.forEach(info => {
+				info.initiativeRoll = dice.roll("1d20").total;
+				info.nonlethalDamage = 0;
+				info.lethalDamage = 0;
+			});
+			await pfdb.encounters.update(encounterId, {participants: encounter.participants});
+			setEncounterStarted(true);
+		}
 	};
 
 	const ParticipantItem: FC<{info: IParticipant, index: number}> = ({info, index}) => {
@@ -344,8 +354,13 @@ const Page: FC = () => {
 			<Flex
 				direction="column"
 				justifyContent="center"
+				backgroundColor={useColorModeValue(
+					info.combatant.type === "ally" ? "green.200" : "red.300",
+					info.combatant.type === "ally" ? "green.600" : "red.800"
+				)}
 				borderColor={useColorModeValue("gray.400", "gray.600")}
 				borderRightWidth="1px"
+				borderLeftRadius={7}
 				p={3}
 			>
 				<Text textAlign="center">{info.combatant.name}</Text>
@@ -353,11 +368,25 @@ const Page: FC = () => {
 			</Flex>
 			<Flex
 				direction="column"
+				justifyContent="center"
+				borderColor={useColorModeValue("gray.400", "gray.600")}
+				borderRightWidth="1px"
+				px={3}
+			>
+				<Text textAlign="center">Initiative</Text>
+				<Text fontSize="larger" fontWeight="bold" textAlign="center">
+					{info.initiativeRoll === 0 ? 0 : info.initiativeRoll + info.combatant.initiative}
+				</Text>
+			</Flex>
+			<Flex
+				direction="column"
 				borderColor={useColorModeValue("gray.400", "gray.600")}
 				borderRightWidth="1px"
 				p={1}
 			>
-				<Text>Current Health: {info.combatant.maxHealth - info.lethalDamage}/{info.combatant.maxHealth}</Text>
+				<Text textAlign="center">
+					Current Health: {info.combatant.maxHealth - info.lethalDamage}/{info.combatant.maxHealth}
+				</Text>
 				<InputGroup size="md">
 					<Input
 						pr=".5rem"
