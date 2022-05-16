@@ -457,7 +457,21 @@ const Page: FC = () => {
 						/>
 					</ButtonGroup>
 				</Flex>
-				{encounter.participants.map((info, index) => <ParticipantItem key={index} info={info} index={index} />)}
+				{encounter.participants.map((info, index) => <ParticipantItem key={index} info={info} index={index} />)
+					.sort((a, b) => {
+						const infoA = (a.props as { info: IParticipant, index: number }).info;
+						const infoB = (b.props as { info: IParticipant, index: number }).info;
+						const iniA = parseInt(String(infoA.initiativeRoll)) + parseInt(String(infoA.combatant.initiative)) + (infoA.combatant.type === "ally" ? infoA.combatant.initiative / 100 : 0);
+						const iniB = parseInt(String(infoB.initiativeRoll)) + parseInt(String(infoB.combatant.initiative)) + (infoB.combatant.type === "ally" ? infoB.combatant.initiative / 100 : 0);
+						
+						if (iniA < iniB) {
+							return 1;
+						}
+						if (iniA > iniB) {
+							return -1;
+						}
+						return 0;
+					})}
 			</>}
 		</Flex>
 		<CombatantsModal
