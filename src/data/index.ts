@@ -109,7 +109,17 @@ export interface IEncounter {
 		nonlethalDamage: number;
 		lethalDamage: number;
 		conditions: Array<Condition>;
-		linkedWith?: number;
+		linkedParticipants: Array<{
+			combatant: {
+				name: string;
+				initiative: number;
+				maxHealth: number;
+			};
+			temporaryHealth: number;
+			nonlethalDamage: number;
+			lethalDamage: number;
+			conditions: Array<Condition>;
+		}>;
 	}>;
 }
 

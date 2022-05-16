@@ -15,7 +15,17 @@ export class Encounter implements IEncounter {
 		nonlethalDamage: number;
 		lethalDamage: number;
 		conditions: Array<Condition>;
-		linkedWith?: number;
+		linkedParticipants: Array<{
+			combatant: {
+				name: string;
+				initiative: number;
+				maxHealth: number;
+			};
+			temporaryHealth: number;
+			nonlethalDamage: number;
+			lethalDamage: number;
+			conditions: Array<Condition>;
+		}>;
 	}>;
 
 	constructor(name: string) {
@@ -36,6 +46,7 @@ export class Encounter implements IEncounter {
 			nonlethalDamage: 0,
 			lethalDamage: 0,
 			conditions: [],
+			linkedParticipants: [],
 		});
 		if (this.id) {
 			await pfdb.encounters.update(this.id, {participants: this.participants});
