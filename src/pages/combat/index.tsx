@@ -86,23 +86,43 @@ const Page: FC = () => {
 	};
 
 	const ParticipantItem: FC<{ info: IParticipant, index: number }> = ({info, index}) => {
-		const [damage, setDamage] = useState<number>(0);
+		const [nonlethalDamage, setNonlethalDamage] = useState<number>(0);
+		const [lethalDamage, setLethalDamage] = useState<number>(0);
 
-		const applyDamage = async () => {
+		const applyLethalDamage = async () => {
 			if (encounter) {
-				encounter.participants[index].lethalDamage += damage;
-				setDamage(0);
+				encounter.participants[index].lethalDamage += lethalDamage;
+				setLethalDamage(0);
+				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
+			}
+		};
+
+		const applyNonlethalDamage = async () => {
+			if (encounter) {
+				encounter.participants[index].nonlethalDamage += nonlethalDamage;
+				setNonlethalDamage(0);
 				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
 			}
 		};
 
 		const applyHeal = async () => {
 			if (encounter) {
-				encounter.participants[index].lethalDamage -= damage;
+				encounter.participants[index].lethalDamage -= lethalDamage;
 				if (encounter.participants[index].lethalDamage < 0) {
 					encounter.participants[index].lethalDamage = 0;
 				}
-				setDamage(0);
+				setLethalDamage(0);
+				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
+			}
+		};
+
+		const applyNonlethalHeal = async () => {
+			if (encounter) {
+				encounter.participants[index].nonlethalDamage -= nonlethalDamage;
+				if (encounter.participants[index].nonlethalDamage < 0) {
+					encounter.participants[index].nonlethalDamage = 0;
+				}
+				setNonlethalDamage(0);
 				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
 			}
 		};
@@ -127,8 +147,9 @@ const Page: FC = () => {
 				p={3}
 			>
 				<Text textAlign="center">{info.combatant.name}</Text>
-				<Text fontSize="small">Initiative
-					Modifier: {info.combatant.initiative > 0 ? "+" : ""}{info.combatant.initiative}</Text>
+				<Text fontSize="small">
+					Initiative Modifier: {info.combatant.initiative > 0 ? "+" : ""}{info.combatant.initiative}
+				</Text>
 			</Flex>
 			<Flex
 				direction="column"
@@ -156,12 +177,12 @@ const Page: FC = () => {
 						pr=".5rem"
 						type="number"
 						min={0}
-						value={damage}
-						onChange={e => setDamage(parseInt(e.target.value))}
+						value={lethalDamage}
+						onChange={e => setLethalDamage(parseInt(e.target.value))}
 						onKeyDown={e => {
 							if (e.key === "Enter") {
 								e.preventDefault();
-								applyDamage().catch(console.error);
+								applyLethalDamage().catch(console.error);
 							}
 						}}
 						onFocus={e => e.target.select()}
@@ -169,7 +190,39 @@ const Page: FC = () => {
 					<InputRightElement width="4.7rem">
 						<ButtonGroup isAttached size="sm" h="1.75rem">
 							<IconButton h="1.75rem" aria-label="Heal" icon={<FaPlus />} onClick={applyHeal} />
-							<IconButton h="1.75rem" aria-label="Damage" icon={<FaMinus />} onClick={applyDamage} />
+							<IconButton h="1.75rem" aria-label="Damage" icon={<FaMinus />} onClick={applyLethalDamage} />
+						</ButtonGroup>
+					</InputRightElement>
+				</InputGroup>
+			</Flex>
+			<Flex
+				direction="column"
+				borderColor={useColorModeValue("gray.400", "gray.600")}
+				borderRightWidth="1px"
+				p={1}
+			>
+				<Text textAlign="center">
+					Nonlethal Damage: {info.nonlethalDamage}
+				</Text>
+				<InputGroup size="md">
+					<Input
+						pr=".5rem"
+						type="number"
+						min={0}
+						value={nonlethalDamage}
+						onChange={e => setNonlethalDamage(parseInt(e.target.value))}
+						onKeyDown={e => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								applyNonlethalDamage().catch(console.error);
+							}
+						}}
+						onFocus={e => e.target.select()}
+					/>
+					<InputRightElement width="4.7rem">
+						<ButtonGroup isAttached size="sm" h="1.75rem">
+							<IconButton h="1.75rem" aria-label="Heal" icon={<FaPlus />} onClick={applyNonlethalHeal} />
+							<IconButton h="1.75rem" aria-label="Damage" icon={<FaMinus />} onClick={applyNonlethalDamage} />
 						</ButtonGroup>
 					</InputRightElement>
 				</InputGroup>
