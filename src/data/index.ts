@@ -94,33 +94,35 @@ export interface ICombatant {
 	type: "ally" | "enemy";
 }
 
-export interface IEncounter {
-	id?: number;
-	name: string;
-	participants: Array<{
+export interface IParticipantInfo {
+	combatant: {
+		name: string;
+		initiative: number;
+		maxHealth: number;
+		type: "ally" | "enemy";
+	};
+	initiativeRoll: number;
+	temporaryHealth: number;
+	nonlethalDamage: number;
+	lethalDamage: number;
+	conditions: Array<Condition>;
+	linkedParticipants: Array<{
 		combatant: {
 			name: string;
 			initiative: number;
 			maxHealth: number;
-			type: "ally" | "enemy";
 		};
-		initiativeRoll: number;
 		temporaryHealth: number;
 		nonlethalDamage: number;
 		lethalDamage: number;
 		conditions: Array<Condition>;
-		linkedParticipants: Array<{
-			combatant: {
-				name: string;
-				initiative: number;
-				maxHealth: number;
-			};
-			temporaryHealth: number;
-			nonlethalDamage: number;
-			lethalDamage: number;
-			conditions: Array<Condition>;
-		}>;
 	}>;
+}
+
+export interface IEncounter {
+	id?: number;
+	name: string;
+	participants: Array<IParticipantInfo>;
 }
 
 class PathfinderDatabase extends Dexie {

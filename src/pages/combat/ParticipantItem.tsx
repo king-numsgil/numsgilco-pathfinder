@@ -11,42 +11,17 @@ import {
 	useColorModeValue
 } from "@chakra-ui/react";
 
-import {Condition, Encounter, pfdb} from "data";
-
-export interface IParticipant {
-	combatant: {
-		name: string;
-		initiative: number;
-		maxHealth: number;
-		type: "ally" | "enemy";
-	};
-	initiativeRoll: number;
-	temporaryHealth: number;
-	nonlethalDamage: number;
-	lethalDamage: number;
-	conditions: Array<Condition>;
-	linkedParticipants: Array<{
-		combatant: {
-			name: string;
-			initiative: number;
-			maxHealth: number;
-		};
-		temporaryHealth: number;
-		nonlethalDamage: number;
-		lethalDamage: number;
-		conditions: Array<Condition>;
-	}>;
-}
+import {Encounter, IParticipantInfo, pfdb} from "data";
 
 export interface ParticipantItemProps {
 	encounter: Encounter;
-	info: IParticipant;
-	index: number;
+	info: IParticipantInfo & {index: number};
 }
 
-export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, index}) => {
+export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info}) => {
 	const [nonlethalDamage, setNonlethalDamage] = useState<number>(0);
 	const [lethalDamage, setLethalDamage] = useState<number>(0);
+	const {index} = info;
 
 	const applyLethalDamage = async () => {
 		if (encounter.id) {

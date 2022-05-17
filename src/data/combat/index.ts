@@ -1,4 +1,4 @@
-import {Condition, ICombatant, IEncounter, pfdb} from "../index";
+import {ICombatant, IEncounter, IParticipantInfo, pfdb} from "../index";
 
 export class Combatant implements ICombatant {
 	id?: number;
@@ -18,30 +18,23 @@ export class Combatant implements ICombatant {
 export class Encounter implements IEncounter {
 	id?: number;
 	name: string;
-	participants: Array<{
-		combatant: {
-			name: string;
-			initiative: number;
-			maxHealth: number;
-			type: "ally" | "enemy";
-		};
-		initiativeRoll: number;
-		temporaryHealth: number;
-		nonlethalDamage: number;
-		lethalDamage: number;
-		conditions: Array<Condition>;
-		linkedParticipants: Array<{
-			combatant: {
-				name: string;
-				initiative: number;
-				maxHealth: number;
-			};
-			temporaryHealth: number;
-			nonlethalDamage: number;
-			lethalDamage: number;
-			conditions: Array<Condition>;
-		}>;
-	}>;
+	participants: Array<IParticipantInfo>;
+
+	get sortedParticipants(): Array<IParticipantInfo & {index: number}> {
+		return this.participants.map((info, index) => ({index, ...info}))
+			.sort((a, b) => {
+				const iniA = a.initiativeRoll + a.combatant.initiative + (a.combatant.type === "ally" ? a.combatant.initiative / 100 : 0);
+				const iniB = b.initiativeRoll + b.combatant.initiative + (b.combatant.type === "ally" ? b.combatant.initiative / 100 : 0);
+
+				if (iniA < iniB) {
+					return 1;
+				}
+				if (iniA > iniB) {
+					return -1;
+				}
+				return 0;
+			});
+	}
 
 	constructor(name: string) {
 		this.name = name;

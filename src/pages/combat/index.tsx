@@ -6,7 +6,7 @@ import {Helmet} from "react-helmet-async";
 import {Dice} from "dice-typescript";
 import {FC, useState} from "react";
 
-import {ParticipantItem, ParticipantItemProps} from "./ParticipantItem";
+import {ParticipantItem} from "./ParticipantItem";
 import {DiceFormula} from "components/DiceFormula";
 import {CombatantsModal} from "./CombatantsModal";
 import {EncounterModal} from "./EncounterModal";
@@ -94,24 +94,9 @@ const Page: FC = () => {
 						/>
 					</ButtonGroup>
 				</Flex>
-				{encounter.participants.map((info, index) =>
-						<ParticipantItem key={index} encounter={encounter} info={info} index={index} />
-					)
-					.sort((a, b) => {
-						const infoA = (a.props as ParticipantItemProps).info;
-						const infoB = (b.props as ParticipantItemProps).info;
-						const iniA = infoA.initiativeRoll + infoA.combatant.initiative + (infoA.combatant.type === "ally" ? infoA.combatant.initiative / 100 : 0);
-						const iniB = infoB.initiativeRoll + infoB.combatant.initiative + (infoB.combatant.type === "ally" ? infoB.combatant.initiative / 100 : 0);
-
-						if (iniA < iniB) {
-							return 1;
-						}
-						if (iniA > iniB) {
-							return -1;
-						}
-						return 0;
-					})
-				}
+				{encounter.sortedParticipants.map((info, index) =>
+					<ParticipantItem key={index} encounter={encounter} info={info} />
+				)}
 			</>}
 		</Flex>
 		<CombatantsModal
