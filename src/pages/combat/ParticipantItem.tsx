@@ -219,7 +219,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 							} else {
 								const index = encounter.participants[info.index].conditions.findIndex(i => i === value);
 								if (index >= 0) {
-									encounter.participants[info.index].conditions = encounter.participants[info.index].conditions.splice(index, 1);
+									encounter.participants[info.index].conditions.splice(index, 1);
 								}
 							}
 
@@ -252,7 +252,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 							} else {
 								const index = encounter.participants[info.index].conditions.findIndex(i => i === value);
 								if (index >= 0) {
-									encounter.participants[info.index].conditions = encounter.participants[info.index].conditions.splice(index, 1);
+									encounter.participants[info.index].conditions.splice(index, 1);
 								}
 							}
 

@@ -1,6 +1,6 @@
 import {HTMLChakraProps, IconButton, Tooltip} from "@chakra-ui/react";
 import {IconType} from "react-icons";
-import {FC, useState} from "react";
+import {FC} from "react";
 
 interface ToggleIconButtonProps {
 	"aria-label": string;
@@ -10,19 +10,17 @@ interface ToggleIconButtonProps {
 }
 
 export const ToggleIconButton: FC<ToggleIconButtonProps & HTMLChakraProps<"button">> = props => {
-	const [active, setActive] = useState<boolean>(false);
 	const {state, onToggle, icon, ...rest} = props;
 	const Icon = icon;
 
 	return <Tooltip label={props["aria-label"]}>
 		<IconButton
 			colorScheme="yellow"
-			variant={active ? "solid" : "ghost"}
+			variant={state ? "solid" : "ghost"}
 			icon={<Icon />}
 			{...rest}
 			onClick={_ => {
-				setActive(!active);
-				onToggle(active);
+				onToggle(!state);
 			}}
 		/>
 	</Tooltip>;
