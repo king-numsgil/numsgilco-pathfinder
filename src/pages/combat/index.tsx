@@ -94,10 +94,9 @@ const Page: FC = () => {
 						/>
 					</ButtonGroup>
 				</Flex>
-				{encounter.participants.map((info, index) => <ParticipantItem key={index}
-				                                                              encounter={encounter}
-				                                                              info={info}
-				                                                              index={index} />)
+				{encounter.participants.map((info, index) =>
+						<ParticipantItem key={index} encounter={encounter} info={info} index={index} />
+					)
 					.sort((a, b) => {
 						const infoA = (a.props as ParticipantItemProps).info;
 						const infoB = (b.props as ParticipantItemProps).info;
