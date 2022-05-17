@@ -16,9 +16,10 @@ import {Encounter, IParticipantInfo, pfdb} from "data";
 export interface ParticipantItemProps {
 	encounter: Encounter;
 	info: IParticipantInfo & {index: number};
+	active: boolean;
 }
 
-export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info}) => {
+export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, active}) => {
 	const [nonlethalDamage, setNonlethalDamage] = useState<number>(0);
 	const [lethalDamage, setLethalDamage] = useState<number>(0);
 	const {index} = info;
@@ -67,6 +68,10 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info}) => 
 		borderColor={useColorModeValue("gray.400", "gray.600")}
 		borderWidth="1px"
 		borderRadius={8}
+		backgroundColor={useColorModeValue(
+			active ? "gray.400" : "inherit",
+			active ? "gray.600" : "inherit"
+		)}
 	>
 		<Flex
 			direction="column"

@@ -14,6 +14,7 @@ import {RouteGenerics} from "../index";
 import {Encounter, pfdb} from "data";
 
 const Page: FC = () => {
+	const [activeParticipant, setActiveParticipant] = useState<number>(-1);
 	const [encounterStarted, setEncounterStarted] = useState<boolean>(false);
 	const [encounterId, setEncounterId] = useState<number>(0);
 	const combatantsDisclosure = useDisclosure();
@@ -46,6 +47,7 @@ const Page: FC = () => {
 			});
 			await pfdb.encounters.update(encounterId, {participants: encounter.participants});
 			setEncounterStarted(true);
+			setActiveParticipant(0);
 		}
 	};
 
@@ -80,22 +82,37 @@ const Page: FC = () => {
 							aria-label="Stop"
 							icon={<FaStop />}
 							disabled={!encounterStarted}
-							onClick={() => setEncounterStarted(false)}
+							onClick={() => {
+								setEncounterStarted(false);
+								setActiveParticipant(-1);
+							}}
 						/>
 						<IconButton
 							aria-label="Previous"
 							icon={<FaChevronLeft />}
 							disabled={!encounterStarted}
+							onClick={() => {
+								setActiveParticipant(activeParticipant - 1);
+								if (activeParticipant <= 0) {
+									setActiveParticipant(encounter?.sortedParticipants.length - 1);
+								}
+							}}
 						/>
 						<IconButton
 							aria-label="Next"
 							icon={<FaChevronRight />}
 							disabled={!encounterStarted}
+							onClick={() => {
+								setActiveParticipant(activeParticipant + 1);
+								if (activeParticipant >= encounter?.sortedParticipants.length - 1) {
+									setActiveParticipant(0);
+								}
+							}}
 						/>
 					</ButtonGroup>
 				</Flex>
 				{encounter.sortedParticipants.map((info, index) =>
-					<ParticipantItem key={index} encounter={encounter} info={info} />
+					<ParticipantItem key={info.index} encounter={encounter} info={info} active={activeParticipant === index} />
 				)}
 			</>}
 		</Flex>
