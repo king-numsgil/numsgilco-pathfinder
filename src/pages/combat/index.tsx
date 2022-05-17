@@ -1,53 +1,17 @@
-import {FaChevronLeft, FaChevronRight, FaMinus, FaPlay, FaPlus, FaStop} from "react-icons/all";
+import {Button, ButtonGroup, Flex, IconButton, Text, useDisclosure, useToast} from "@chakra-ui/react";
+import {FaChevronLeft, FaChevronRight, FaPlay, FaStop} from "react-icons/all";
 import {Outlet, Route} from "@tanstack/react-location";
 import {useLiveQuery} from "dexie-react-hooks";
-import {FC, useState} from "react";
 import {Helmet} from "react-helmet-async";
 import {Dice} from "dice-typescript";
-import {
-	Button,
-	ButtonGroup,
-	Flex,
-	IconButton,
-	Input,
-	InputGroup,
-	InputRightElement,
-	Text,
-	useColorModeValue,
-	useDisclosure,
-	useToast
-} from "@chakra-ui/react";
+import {FC, useState} from "react";
 
+import {ParticipantItem, ParticipantItemProps} from "./ParticipantItem";
 import {DiceFormula} from "components/DiceFormula";
 import {CombatantsModal} from "./CombatantsModal";
 import {EncounterModal} from "./EncounterModal";
-import {Condition, Encounter, pfdb} from "data";
 import {RouteGenerics} from "../index";
-
-interface IParticipant {
-	combatant: {
-		name: string;
-		initiative: number;
-		maxHealth: number;
-		type: "ally" | "enemy";
-	};
-	initiativeRoll: number;
-	temporaryHealth: number;
-	nonlethalDamage: number;
-	lethalDamage: number;
-	conditions: Array<Condition>;
-	linkedParticipants: Array<{
-		combatant: {
-			name: string;
-			initiative: number;
-			maxHealth: number;
-		};
-		temporaryHealth: number;
-		nonlethalDamage: number;
-		lethalDamage: number;
-		conditions: Array<Condition>;
-	}>;
-}
+import {Encounter, pfdb} from "data";
 
 const Page: FC = () => {
 	const [encounterStarted, setEncounterStarted] = useState<boolean>(false);
@@ -83,151 +47,6 @@ const Page: FC = () => {
 			await pfdb.encounters.update(encounterId, {participants: encounter.participants});
 			setEncounterStarted(true);
 		}
-	};
-
-	const ParticipantItem: FC<{ info: IParticipant, index: number }> = ({info, index}) => {
-		const [nonlethalDamage, setNonlethalDamage] = useState<number>(0);
-		const [lethalDamage, setLethalDamage] = useState<number>(0);
-
-		const applyLethalDamage = async () => {
-			if (encounter) {
-				encounter.participants[index].lethalDamage += lethalDamage;
-				setLethalDamage(0);
-				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
-			}
-		};
-
-		const applyNonlethalDamage = async () => {
-			if (encounter) {
-				encounter.participants[index].nonlethalDamage += nonlethalDamage;
-				setNonlethalDamage(0);
-				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
-			}
-		};
-
-		const applyHeal = async () => {
-			if (encounter) {
-				encounter.participants[index].lethalDamage -= lethalDamage;
-				if (encounter.participants[index].lethalDamage < 0) {
-					encounter.participants[index].lethalDamage = 0;
-				}
-				setLethalDamage(0);
-				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
-			}
-		};
-
-		const applyNonlethalHeal = async () => {
-			if (encounter) {
-				encounter.participants[index].nonlethalDamage -= nonlethalDamage;
-				if (encounter.participants[index].nonlethalDamage < 0) {
-					encounter.participants[index].nonlethalDamage = 0;
-				}
-				setNonlethalDamage(0);
-				await pfdb.encounters.update(encounterId, {participants: encounter.participants});
-			}
-		};
-
-		return <Flex
-			direction="row"
-			m={2}
-			borderColor={useColorModeValue("gray.400", "gray.600")}
-			borderWidth="1px"
-			borderRadius={8}
-		>
-			<Flex
-				direction="column"
-				justifyContent="center"
-				backgroundColor={useColorModeValue(
-					info.combatant.type === "ally" ? "green.200" : "red.300",
-					info.combatant.type === "ally" ? "green.600" : "red.800"
-				)}
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
-				borderLeftRadius={7}
-				p={3}
-			>
-				<Text textAlign="center">{info.combatant.name}</Text>
-				<Text fontSize="small">
-					Initiative Modifier: {info.combatant.initiative > 0 ? "+" : ""}{info.combatant.initiative}
-				</Text>
-			</Flex>
-			<Flex
-				direction="column"
-				justifyContent="center"
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
-				px={3}
-			>
-				<Text textAlign="center">Initiative</Text>
-				<Text fontSize="larger" fontWeight="bold" textAlign="center">
-					{info.initiativeRoll === 0 ? 0 : info.initiativeRoll + info.combatant.initiative}
-				</Text>
-			</Flex>
-			<Flex
-				direction="column"
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
-				p={1}
-			>
-				<Text textAlign="center">
-					Current Health: {info.combatant.maxHealth - info.lethalDamage}/{info.combatant.maxHealth}
-				</Text>
-				<InputGroup size="md">
-					<Input
-						pr=".5rem"
-						type="number"
-						min={0}
-						value={lethalDamage}
-						onChange={e => setLethalDamage(parseInt(e.target.value))}
-						onKeyDown={e => {
-							if (e.key === "Enter") {
-								e.preventDefault();
-								applyLethalDamage().catch(console.error);
-							}
-						}}
-						onFocus={e => e.target.select()}
-					/>
-					<InputRightElement width="4.7rem">
-						<ButtonGroup isAttached size="sm" h="1.75rem">
-							<IconButton h="1.75rem" aria-label="Heal" icon={<FaPlus />} onClick={applyHeal} />
-							<IconButton h="1.75rem" aria-label="Damage" icon={<FaMinus />} onClick={applyLethalDamage} />
-						</ButtonGroup>
-					</InputRightElement>
-				</InputGroup>
-			</Flex>
-			<Flex
-				direction="column"
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
-				p={1}
-			>
-				<Text textAlign="center">
-					Nonlethal Damage: {info.nonlethalDamage}
-				</Text>
-				<InputGroup size="md">
-					<Input
-						pr=".5rem"
-						type="number"
-						min={0}
-						value={nonlethalDamage}
-						onChange={e => setNonlethalDamage(parseInt(e.target.value))}
-						onKeyDown={e => {
-							if (e.key === "Enter") {
-								e.preventDefault();
-								applyNonlethalDamage().catch(console.error);
-							}
-						}}
-						onFocus={e => e.target.select()}
-					/>
-					<InputRightElement width="4.7rem">
-						<ButtonGroup isAttached size="sm" h="1.75rem">
-							<IconButton h="1.75rem" aria-label="Heal" icon={<FaPlus />} onClick={applyNonlethalHeal} />
-							<IconButton h="1.75rem" aria-label="Damage" icon={<FaMinus />} onClick={applyNonlethalDamage} />
-						</ButtonGroup>
-					</InputRightElement>
-				</InputGroup>
-			</Flex>
-		</Flex>
 	};
 
 	return <>
@@ -275,10 +94,13 @@ const Page: FC = () => {
 						/>
 					</ButtonGroup>
 				</Flex>
-				{encounter.participants.map((info, index) => <ParticipantItem key={index} info={info} index={index} />)
+				{encounter.participants.map((info, index) => <ParticipantItem key={index}
+				                                                              encounter={encounter}
+				                                                              info={info}
+				                                                              index={index} />)
 					.sort((a, b) => {
-						const infoA = (a.props as { info: IParticipant, index: number }).info;
-						const infoB = (b.props as { info: IParticipant, index: number }).info;
+						const infoA = (a.props as ParticipantItemProps).info;
+						const infoB = (b.props as ParticipantItemProps).info;
 						const iniA = infoA.initiativeRoll + infoA.combatant.initiative + (infoA.combatant.type === "ally" ? infoA.combatant.initiative / 100 : 0);
 						const iniB = infoB.initiativeRoll + infoB.combatant.initiative + (infoB.combatant.type === "ally" ? infoB.combatant.initiative / 100 : 0);
 
