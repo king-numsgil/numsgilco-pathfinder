@@ -1,5 +1,26 @@
-import {FaMinus, FaPlus} from "react-icons/all";
 import {FC, useState} from "react";
+import {
+	FaMinus,
+	FaPlus,
+	GiBleedingWound,
+	GiBlindfold,
+	GiBottledBolt,
+	GiBrainstorm,
+	GiCircleClaws,
+	GiDeadHead,
+	GiDeathSkull,
+	GiDragonHead,
+	GiEntangledTyphoon,
+	GiFeatherWound,
+	GiGrab,
+	GiJumpingRope,
+	GiLightningShout,
+	GiRunningShoe,
+	GiScreaming,
+	GiSleepy,
+	GiStomach,
+	GiTiredEye
+} from "react-icons/all";
 import {
 	ButtonGroup,
 	Flex,
@@ -11,11 +32,12 @@ import {
 	useColorModeValue
 } from "@chakra-ui/react";
 
-import {Encounter, IParticipantInfo, pfdb} from "data";
+import {Condition, Encounter, IParticipantInfo, pfdb} from "data";
+import {ToggleIconButton} from "components/ToggleIconButton";
 
 export interface ParticipantItemProps {
 	encounter: Encounter;
-	info: IParticipantInfo & {index: number};
+	info: IParticipantInfo & { index: number };
 	active: boolean;
 }
 
@@ -165,6 +187,81 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 					</ButtonGroup>
 				</InputRightElement>
 			</InputGroup>
+		</Flex>
+		<Flex
+			direction="column"
+			justifyContent="center"
+			alignItems="center"
+			borderColor={useColorModeValue("gray.400", "gray.600")}
+			borderRightWidth="1px"
+			p={1}
+		>
+			<ButtonGroup isAttached size="sm" borderBottomRadius={0}>
+				{[
+					{value: Condition.Blinded, text: "Blinded", icon: GiBlindfold},
+					{value: Condition.Confused, text: "Confused", icon: GiBrainstorm},
+					{value: Condition.Dead, text: "Dead", icon: GiDeathSkull},
+					{value: Condition.Dying, text: "Dying", icon: GiBleedingWound},
+					{value: Condition.Entangled, text: "Entangled", icon: GiEntangledTyphoon},
+					{value: Condition.Exhausted, text: "Exhausted", icon: GiSleepy},
+					{value: Condition.Fatigued, text: "Fatigued", icon: GiTiredEye},
+					{value: Condition.Frightened, text: "Frightened", icon: GiDragonHead},
+					{value: Condition.Grappled, text: "Grappled", icon: GiGrab},
+				].map(({value, text, icon}, index) => <ToggleIconButton
+					key={index}
+					aria-label={text}
+					icon={icon}
+					state={info.conditions.find(i => i === value) !== undefined}
+					onToggle={state => {
+						if (encounter.id) {
+							if (state) {
+								encounter.participants[info.index].conditions.push(value);
+							} else {
+								const index = encounter.participants[info.index].conditions.findIndex(i => i === value);
+								if (index >= 0) {
+									encounter.participants[info.index].conditions = encounter.participants[info.index].conditions.splice(index, 1);
+								}
+							}
+
+							pfdb.encounters.update(encounter.id, {participants: encounter.participants})
+								.catch(console.error);
+						}
+					}}
+				/>)}
+			</ButtonGroup>
+			<ButtonGroup isAttached size="sm" borderTopRadius={0}>
+				{[
+					{value: Condition.Nauseated, text: "Nauseated", icon: GiLightningShout},
+					{value: Condition.Panicked, text: "Panicked", icon: GiRunningShoe},
+					{value: Condition.Paralyzed, text: "Paralyzed", icon: GiBottledBolt},
+					{value: Condition.Pinned, text: "Pinned", icon: GiJumpingRope},
+					{value: Condition.Shaken, text: "Shaken", icon: GiScreaming},
+					{value: Condition.Sickened, text: "Sickened", icon: GiStomach},
+					{value: Condition.Staggered, text: "Staggered", icon: GiFeatherWound},
+					{value: Condition.Stunned, text: "Stunned", icon: GiCircleClaws},
+					{value: Condition.Unconscious, text: "Unconscious", icon: GiDeadHead},
+				].map(({value, text, icon}, index) => <ToggleIconButton
+					key={index + 9}
+					aria-label={text}
+					icon={icon}
+					state={info.conditions.find(i => i === value) !== undefined}
+					onToggle={state => {
+						if (encounter.id) {
+							if (state) {
+								encounter.participants[info.index].conditions.push(value);
+							} else {
+								const index = encounter.participants[info.index].conditions.findIndex(i => i === value);
+								if (index >= 0) {
+									encounter.participants[info.index].conditions = encounter.participants[info.index].conditions.splice(index, 1);
+								}
+							}
+
+							pfdb.encounters.update(encounter.id, {participants: encounter.participants})
+								.catch(console.error);
+						}
+					}}
+				/>)}
+			</ButtonGroup>
 		</Flex>
 	</Flex>
 };
