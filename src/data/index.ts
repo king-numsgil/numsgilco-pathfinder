@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 
-import {Encounter} from "./combat";
+import {Combatant, Encounter} from "./combat";
 import {Feat} from "./feats";
 
 export type FeatType = "General" | "Combat" | "Item Creation" | "Metamagic" | "Achievement" | "Story" | "Mythic";
@@ -136,6 +136,7 @@ class PathfinderDatabase extends Dexie {
 			encounters: "++id, name",
 			feats: "++id, name, type, *extendedTypes",
 		});
+		this.combatants.mapToClass(Combatant);
 		this.encounters.mapToClass(Encounter);
 		this.feats.mapToClass(Feat);
 	}
@@ -143,5 +144,5 @@ class PathfinderDatabase extends Dexie {
 
 export const pfdb = new PathfinderDatabase();
 
-export {Encounter} from "./combat";
+export {Combatant, Encounter} from "./combat";
 export {Feat} from "./feats";

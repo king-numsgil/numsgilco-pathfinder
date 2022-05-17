@@ -1,4 +1,19 @@
-import {Condition, IEncounter, pfdb} from "../index";
+import {Condition, ICombatant, IEncounter, pfdb} from "../index";
+
+export class Combatant implements ICombatant {
+	id?: number;
+	name: string;
+	initiative: number;
+	maxHealth: number;
+	type: "ally" | "enemy";
+
+	constructor(name: string) {
+		this.name = name;
+		this.initiative = 0;
+		this.maxHealth = 1;
+		this.type = "ally";
+	}
+}
 
 export class Encounter implements IEncounter {
 	id?: number;
