@@ -263,5 +263,5 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 				/>)}
 			</ButtonGroup>
 		</Flex>
-	</Flex>
+	</Flex>;
 };
