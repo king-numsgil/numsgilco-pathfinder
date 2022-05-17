@@ -37,6 +37,12 @@ export const DiceFormula: FC<InputGroupProps> = props => {
 			placeholder="Dice formulae"
 			value={formulae}
 			onChange={event => setFormulae(event.target.value)}
+			onKeyDown={e => {
+				if (e.key === "Enter") {
+					e.preventDefault();
+					handleRoll();
+				}
+			}}
 		/>
 		<InputRightElement width="3.7rem">
 			<Button h="1.75rem" size="sm" onClick={handleRoll}>
