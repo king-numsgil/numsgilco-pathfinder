@@ -72,11 +72,10 @@ const CombatantFormModal: FC<CombatantFormProps & UseModalProps> = ({combatantId
 				<ModalHeader>Create a new Combatant</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
-					<FormControl isInvalid={errors.name !== undefined}>
-						<FormLabel htmlFor="name">Name</FormLabel>
+					<FormControl id="name" isInvalid={errors.name !== undefined}>
+						<FormLabel>Name</FormLabel>
 						<Input
 							type="text"
-							id="name"
 							{...register("name", {
 								required: "This is required",
 							})}
@@ -85,11 +84,10 @@ const CombatantFormModal: FC<CombatantFormProps & UseModalProps> = ({combatantId
 							{errors.name && errors.name.message}
 						</FormErrorMessage>
 					</FormControl>
-					<FormControl isInvalid={errors.initiative !== undefined}>
-						<FormLabel htmlFor="initiative">Initiative Modifier</FormLabel>
+					<FormControl id="initiative" isInvalid={errors.initiative !== undefined}>
+						<FormLabel>Initiative Modifier</FormLabel>
 						<Input
 							type="number"
-							id="initiative"
 							{...register("initiative", {
 								min: {value: -20, message: "Initiative modifier can't be lower than -20"},
 								max: {value: 20, message: "Initiative modifier can't be higher than 20"},
@@ -100,11 +98,10 @@ const CombatantFormModal: FC<CombatantFormProps & UseModalProps> = ({combatantId
 							{errors.initiative && errors.initiative.message}
 						</FormErrorMessage>
 					</FormControl>
-					<FormControl isInvalid={errors.maxHealth !== undefined}>
-						<FormLabel htmlFor="maxHealth">Maximum HP</FormLabel>
+					<FormControl id="maxHealth" isInvalid={errors.maxHealth !== undefined}>
+						<FormLabel>Maximum HP</FormLabel>
 						<Input
 							type="number"
-							id="maxHealth"
 							{...register("maxHealth", {
 								min: {value: 1, message: "Maximum Health can't be lower than 1"},
 								valueAsNumber: true,
@@ -114,9 +111,9 @@ const CombatantFormModal: FC<CombatantFormProps & UseModalProps> = ({combatantId
 							{errors.maxHealth && errors.maxHealth.message}
 						</FormErrorMessage>
 					</FormControl>
-					<FormControl>
-						<FormLabel htmlFor="type">Combatant Type</FormLabel>
-						<Select id="type" {...register("type")}>
+					<FormControl id="type">
+						<FormLabel>Combatant Type</FormLabel>
+						<Select {...register("type")}>
 							<option value="ally">Ally</option>
 							<option value="enemy">Enemy</option>
 						</Select>
