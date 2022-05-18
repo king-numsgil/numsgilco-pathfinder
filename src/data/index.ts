@@ -94,6 +94,18 @@ export interface ICombatant {
 	type: "ally" | "enemy";
 }
 
+export interface ILinkedParticipantInfo {
+	combatant: {
+		name: string;
+		initiative: number;
+		maxHealth: number;
+	};
+	temporaryHealth: number;
+	nonlethalDamage: number;
+	lethalDamage: number;
+	conditions: Array<Condition>;
+}
+
 export interface IParticipantInfo {
 	combatant: {
 		name: string;
@@ -106,17 +118,7 @@ export interface IParticipantInfo {
 	nonlethalDamage: number;
 	lethalDamage: number;
 	conditions: Array<Condition>;
-	linkedParticipants: Array<{
-		combatant: {
-			name: string;
-			initiative: number;
-			maxHealth: number;
-		};
-		temporaryHealth: number;
-		nonlethalDamage: number;
-		lethalDamage: number;
-		conditions: Array<Condition>;
-	}>;
+	linkedParticipants: Array<ILinkedParticipantInfo>;
 }
 
 export interface IEncounter {

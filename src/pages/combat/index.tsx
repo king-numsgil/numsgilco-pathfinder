@@ -6,8 +6,8 @@ import {Helmet} from "react-helmet-async";
 import {Dice} from "dice-typescript";
 import {FC, useState} from "react";
 
-import {ParticipantItem} from "./ParticipantItem";
 import {DiceFormula} from "components/DiceFormula";
+import {ParticipantItem} from "./ParticipantItem";
 import {CombatantsModal} from "./CombatantsModal";
 import {EncounterModal} from "./EncounterModal";
 import {RouteGenerics} from "../index";
@@ -55,8 +55,8 @@ const Page: FC = () => {
 		<Helmet>
 			<title>Combat Tracker - Numsgil Co</title>
 		</Helmet>
-		<Flex direction="column">
-			<Flex direction="row" justifyContent={{base: "center", md: "flex-end"}} flexWrap="wrap">
+		<Flex direction="column" alignItems="center">
+			<Flex direction="row" justifyContent={{base: "center", md: "flex-end"}} flexWrap="wrap" w="100%">
 				<DiceFormula width={{base: "100%", md: "20rem"}} m={2} />
 				<ButtonGroup size="md" variant="solid" isAttached m={2}>
 					<Button onClick={combatantsDisclosure.onOpen}>
@@ -69,7 +69,7 @@ const Page: FC = () => {
 			</Flex>
 			{encounter === undefined && <Text as="h3" textAlign="center">No Encounter Loaded</Text>}
 			{encounter !== undefined && <>
-				<Flex direction="row" justifyContent="center" alignItems="center">
+				<Flex direction="row" justifyContent="center" alignItems="center" w="100%">
 					<Text as="h3" mx={3}>{encounter.name}</Text>
 					<ButtonGroup isAttached size="sm" variant="outline">
 						<IconButton
