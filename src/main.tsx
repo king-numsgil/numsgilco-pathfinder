@@ -1,5 +1,6 @@
 import {createBrowserHistory, Outlet, ReactLocation, Router} from "@tanstack/react-location";
-import {ChakraProvider, ColorModeScript} from "@chakra-ui/react";
+import {ChakraProvider, ColorModeScript, useToast} from "@chakra-ui/react";
+import {useRegisterSW} from "virtual:pwa-register/react";
 import {HelmetProvider} from 'react-helmet-async';
 import {createRoot} from "react-dom/client";
 import React from "react";
@@ -11,8 +12,33 @@ const location = new ReactLocation<RouteGenerics>({
 	history: createBrowserHistory(),
 });
 
-createRoot(document.getElementById("root")!).render(
-	<React.StrictMode>
+const Main: React.FC = () => {
+	const toast = useToast();
+	const {updateServiceWorker} = useRegisterSW({
+		onRegistered(_: any) {
+			toast({
+				position: "bottom",
+				isClosable: true,
+				description: "Numsgil Co is ready for offline use",
+				status: "success",
+				duration: 2500,
+			});
+		},
+		onNeedRefresh() {
+			toast({
+				position: "bottom",
+				isClosable: true,
+				description: "An update is pending, close this to update app",
+				status: "warning",
+				duration: null,
+				onCloseComplete() {
+					updateServiceWorker(true).catch(console.error);
+				},
+			});
+		}
+	});
+
+	return <React.StrictMode>
 		<ChakraProvider theme={theme} resetCSS>
 			<HelmetProvider>
 				<ColorModeScript initialColorMode={theme.config.initialColorMode} />
@@ -21,5 +47,7 @@ createRoot(document.getElementById("root")!).render(
 				</Router>
 			</HelmetProvider>
 		</ChakraProvider>
-	</React.StrictMode>
-);
+	</React.StrictMode>;
+}
+
+createRoot(document.getElementById("root")!).render(<Main />);
