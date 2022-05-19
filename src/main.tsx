@@ -1,5 +1,5 @@
 import {createBrowserHistory, Outlet, ReactLocation, Router} from "@tanstack/react-location";
-import {ChakraProvider, ColorModeScript, useToast} from "@chakra-ui/react";
+import {ChakraProvider, ColorModeScript, createStandaloneToast} from "@chakra-ui/react";
 import {useRegisterSW} from "virtual:pwa-register/react";
 import {HelmetProvider} from 'react-helmet-async';
 import {createRoot} from "react-dom/client";
@@ -8,12 +8,13 @@ import React from "react";
 import {RouteGenerics, routes} from "pages";
 import {theme} from "theme";
 
+const { ToastContainer, toast } = createStandaloneToast();
+
 const location = new ReactLocation<RouteGenerics>({
 	history: createBrowserHistory(),
 });
 
 const Main: React.FC = () => {
-	const toast = useToast();
 	const {updateServiceWorker} = useRegisterSW({
 		onRegistered(_: any) {
 			toast({
@@ -39,6 +40,7 @@ const Main: React.FC = () => {
 	});
 
 	return <React.StrictMode>
+		<ToastContainer />
 		<ChakraProvider theme={theme} resetCSS>
 			<HelmetProvider>
 				<ColorModeScript initialColorMode={theme.config.initialColorMode} />
