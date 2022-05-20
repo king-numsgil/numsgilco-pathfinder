@@ -3,13 +3,6 @@ import {Helmet} from "react-helmet-async";
 import {FC} from "react";
 
 import {RouteGenerics} from "../index";
-import Background from "./Background";
-import Classes from "./Classes";
-import Equipment from "./Equipment";
-import Feats from "./Feats";
-import Inventory from "./Inventory";
-import Spells from "./Spells";
-import Stats from "./Stats";
 
 const Page: FC = () => {
 	return <>
@@ -28,13 +21,41 @@ const route: Route<RouteGenerics> = {
 			path: "/",
 			element: <Page />,
 		},
-		Background,
-		Classes,
-		Equipment,
-		Feats,
-		Inventory,
-		Spells,
-		Stats,
+		{
+			path: "background",
+			element: () => import("./BackgroundPage").then(mod => <mod.BackgroundPage />),
+			meta: {},
+		},
+		{
+			path: "classes",
+			element: () => import("./ClassesPage").then(mod => <mod.ClassesPage />),
+			meta: {},
+		},
+		{
+			path: "equipment",
+			element: () => import("./EquipmentPage").then(mod => <mod.EquipmentPage />),
+			meta: {},
+		},
+		{
+			path: "feats",
+			element: () => import("./FeatsPage").then(mod => <mod.FeatsPage />),
+			meta: {},
+		},
+		{
+			path: "inventory",
+			element: () => import("./InventoryPage").then(mod => <mod.InventoryPage />),
+			meta: {},
+		},
+		{
+			path: "spells",
+			element: () => import("./SpellsPage").then(mod => <mod.SpellsPage />),
+			meta: {},
+		},
+		{
+			path: "stats",
+			element: () => import("./StatsPage").then(mod => <mod.StatsPage />),
+			meta: {},
+		},
 	],
 	meta: {},
 };
