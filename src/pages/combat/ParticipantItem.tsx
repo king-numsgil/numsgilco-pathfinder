@@ -114,7 +114,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 
 	return <>
 		<Flex
-			direction={{ base: "column", md: "row"}}
+			direction={{base: "column", md: "row"}}
 			m={2}
 			borderColor={useColorModeValue("gray.400", "gray.600")}
 			borderWidth="1px"
@@ -310,7 +310,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 					/>)}
 				</ButtonGroup>
 			</Flex>
-			{isLinked === undefined && <FormControl id={`link${index}`} w={{ base: "auto", md: "11rem"}} p={1}>
+			{isLinked === undefined && <FormControl id={`link${index}`} w={{base: "auto", md: "11rem"}} p={1}>
 				<FormLabel mr={0}>
 					Link with...
 					<IconButton

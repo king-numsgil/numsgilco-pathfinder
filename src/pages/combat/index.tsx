@@ -112,7 +112,10 @@ const Page: FC = () => {
 					</ButtonGroup>
 				</Flex>
 				{encounter.sortedParticipants.map((info, index) =>
-					<ParticipantItem key={info.index} encounter={encounter} info={info} active={activeParticipant === index} />
+					<ParticipantItem key={info.index}
+					                 encounter={encounter}
+					                 info={info}
+					                 active={activeParticipant === index} />
 				)}
 			</>}
 		</Flex>
