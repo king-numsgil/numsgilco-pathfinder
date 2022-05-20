@@ -114,7 +114,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 
 	return <>
 		<Flex
-			direction="row"
+			direction={{ base: "column", md: "row"}}
 			m={2}
 			borderColor={useColorModeValue("gray.400", "gray.600")}
 			borderWidth="1px"
@@ -131,9 +131,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 					info.combatant.type === "ally" ? "green.200" : "red.300",
 					info.combatant.type === "ally" ? "green.600" : "red.800"
 				)}
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
-				borderLeftRadius={7}
+				borderRadius={7}
 				p={3}
 			>
 				<Text textAlign="center">{isLinked === undefined ? info.combatant.name : isLinked.combatant.name}</Text>
@@ -145,8 +143,6 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 			{isLinked === undefined && <Flex
 				direction="column"
 				justifyContent="center"
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
 				px={3}
 			>
 				<Text textAlign="center">Initiative</Text>
@@ -154,12 +150,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 					{info.initiativeRoll === 0 ? 0 : info.initiativeRoll + info.combatant.initiative}
 				</Text>
 			</Flex>}
-			<Flex
-				direction="column"
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
-				p={1}
-			>
+			<Flex direction="column" p={1}>
 				<Text textAlign="center">
 					{isLinked === undefined && `Current Health: ${info.combatant.maxHealth - info.lethalDamage}/${info.combatant.maxHealth}`}
 					{isLinked !== undefined && `Current Health: ${isLinked.combatant.maxHealth - isLinked.lethalDamage}/${isLinked.combatant.maxHealth}`}
@@ -190,12 +181,7 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 					</InputRightElement>
 				</InputGroup>
 			</Flex>
-			<Flex
-				direction="column"
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
-				p={1}
-			>
+			<Flex direction="column" p={1}>
 				<Text textAlign="center">
 					Nonlethal Damage: {info.nonlethalDamage}
 				</Text>
@@ -229,8 +215,6 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 				direction="column"
 				justifyContent="center"
 				alignItems="center"
-				borderColor={useColorModeValue("gray.400", "gray.600")}
-				borderRightWidth="1px"
 				p={1}
 			>
 				<ButtonGroup isAttached size="sm" borderBottomRadius={0}>
@@ -326,12 +310,12 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 					/>)}
 				</ButtonGroup>
 			</Flex>
-			{isLinked === undefined && <FormControl id={`link${index}`} w="11rem" p={1}>
-				<FormLabel>
+			{isLinked === undefined && <FormControl id={`link${index}`} w={{ base: "auto", md: "11rem"}} p={1}>
+				<FormLabel mr={0}>
 					Link with...
 					<IconButton
 						aria-label="Link"
-						ml={8}
+						float="right"
 						size="xs"
 						colorScheme="green"
 						icon={<FaCheck />}
