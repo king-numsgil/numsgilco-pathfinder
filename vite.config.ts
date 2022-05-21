@@ -1,26 +1,12 @@
+import {defineConfig, splitVendorChunkPlugin} from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react";
 import {VitePWA} from "vite-plugin-pwa";
-import {defineConfig} from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	build: {
-		rollupOptions: {
-			output: {
-				manualChunks(id) {
-					if (id.includes("react")) {
-						return "react";
-					} else if (id.includes("chakra")) {
-						return "chakra";
-					} else if (id.includes("node_modules")) {
-						return "vendor";
-					}
-				},
-			},
-		},
-	},
 	plugins: [
+		splitVendorChunkPlugin(),
 		tsconfigPaths(),
 		react(),
 		VitePWA({
@@ -47,9 +33,9 @@ export default defineConfig({
 						sizes: "512x512",
 						type: "image/png",
 						purpose: "any maskable",
-					},
-				],
-			},
+					}
+				]
+			}
 		}),
 	],
 });
