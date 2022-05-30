@@ -24,6 +24,9 @@ import {
 } from "react-icons/all";
 import {
 	ButtonGroup,
+	Editable,
+	EditableInput,
+	EditablePreview,
 	Flex,
 	FormControl,
 	FormLabel,
@@ -47,6 +50,7 @@ export interface ParticipantItemProps {
 }
 
 export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, active, isLinked}) => {
+	const [name, setName] = useState<string>(isLinked === undefined ? info.combatant.name : isLinked.combatant.name);
 	const [nonlethalDamage, setNonlethalDamage] = useState<number>(0);
 	const [lethalDamage, setLethalDamage] = useState<number>(0);
 	const [linkTarget, setLinkTarget] = useState<number>(-1);
@@ -134,7 +138,19 @@ export const ParticipantItem: FC<ParticipantItemProps> = ({encounter, info, acti
 				borderRadius={7}
 				p={3}
 			>
-				<Text textAlign="center">{isLinked === undefined ? info.combatant.name : isLinked.combatant.name}</Text>
+				<Editable textAlign="center" value={name} onChange={value => setName(value)} onSubmit={async value => {
+					if (encounter.id) {
+						if (isLinked === undefined) {
+							encounter.participants[index].combatant.name = value;
+						} else {
+							encounter.participants[index].linkedParticipants[isLinked.index].combatant.name = value;
+						}
+						await pfdb.encounters.update(encounter.id, {participants: encounter.participants});
+					}
+				}}>
+					<EditablePreview />
+					<EditableInput />
+				</Editable>
 				<Text fontSize="small">
 					{isLinked === undefined && `Initiative Modifier: ${info.combatant.initiative > 0 ? "+" : ""}${info.combatant.initiative}`}
 					{isLinked !== undefined && `Initiative Modifier: ${isLinked.combatant.initiative > 0 ? "+" : ""}${isLinked.combatant.initiative}`}
