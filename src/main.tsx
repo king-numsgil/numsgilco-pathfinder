@@ -22,7 +22,7 @@ const Main: React.FC = () => {
 				isClosable: true,
 				description: "Numsgil Co is ready for offline use",
 				status: "success",
-				duration: 2500,
+				duration: 1000,
 			});
 		},
 		onNeedRefresh() {
