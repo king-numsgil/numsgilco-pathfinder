@@ -20,7 +20,12 @@ export class Encounter implements IEncounter {
 	name: string;
 	participants: Array<IParticipantInfo>;
 
-	get sortedParticipants(): Array<IParticipantInfo & {index: number}> {
+	constructor(name: string) {
+		this.name = name;
+		this.participants = [];
+	}
+
+	get sortedParticipants(): Array<IParticipantInfo & { index: number }> {
 		return this.participants.map((info, index) => ({index, ...info}))
 			.sort((a, b) => {
 				const iniA = a.initiativeRoll + a.combatant.initiative + (a.combatant.type === "ally" ? a.combatant.initiative / 100 : 0);
@@ -34,11 +39,6 @@ export class Encounter implements IEncounter {
 				}
 				return 0;
 			});
-	}
-
-	constructor(name: string) {
-		this.name = name;
-		this.participants = [];
 	}
 
 	async addCombatant(id: number) {

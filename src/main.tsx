@@ -8,7 +8,7 @@ import React from "react";
 import {RouteGenerics, routes} from "pages";
 import {theme} from "theme";
 
-const { ToastContainer, toast } = createStandaloneToast();
+const {ToastContainer, toast} = createStandaloneToast();
 
 const location = new ReactLocation<RouteGenerics>({
 	history: createBrowserHistory(),
