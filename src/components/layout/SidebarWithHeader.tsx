@@ -164,7 +164,7 @@ interface NavItemProps extends FlexProps {
 const NavItem: FC<NavItemProps> = ({icon, children, link, ...rest}) =>
 	<Link
 		style={{textDecoration: "none"}}
-		_focus={{boxShadow: "none"}}
+		_focusVisible={{boxShadow: "none"}}
 		{...link}
 	>
 		{({isActive}) => <Flex
