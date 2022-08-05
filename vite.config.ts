@@ -8,7 +8,7 @@ export default defineConfig({
 	plugins: [
 		splitVendorChunkPlugin(),
 		tsconfigPaths(),
-        react(),
+		react(),
 		VitePWA({
 			includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
 			manifest: {
@@ -37,5 +37,5 @@ export default defineConfig({
 				]
 			}
 		}),
-    ],
+	],
 });
