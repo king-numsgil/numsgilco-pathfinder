@@ -1,5 +1,5 @@
 {
-	"name": "numsgil-co-pathfinder",
+	"name": "numsgilco-pathfinder",
 	"private": true,
 	"version": "0.0.0",
 	"scripts": {
@@ -8,7 +8,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@chakra-ui/react": "^2.2.4",
+		"@chakra-ui/react": "^2.2.6",
 		"@emotion/react": "11",
 		"@emotion/styled": "11",
 		"@tanstack/react-location": "^3.7.4",
@@ -20,11 +20,11 @@
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-helmet-async": "^1.3.0",
-		"react-hook-form": "^7.33.1",
+		"react-hook-form": "^7.34.0",
 		"react-icons": "^4.4.0",
 		"react-query": "^4.0.0",
 		"tslib": "^2.4.0",
-		"tstl": "^2.5.7"
+		"tstl": "^2.5.8"
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.15",
