@@ -42,28 +42,7 @@ export const SidebarContent: FC<SidebarContentProps> = ({onClose, ...rest}) => {
 			<CloseButton display={{base: "flex", md: "none"}} onClick={onClose} />
 		</Flex>
 		<NavItem icon={FiHome} link={{to: "/home"}}>Home</NavItem>
-		<NavItem icon={GiSwordsEmblem} link={{to: "/combat"}}>Combat Tracker</NavItem>
+		<NavItem icon={GiSwordsEmblem} link={{to: "/combat", activeOptions: {exact: true}}}>Combat Tracker</NavItem>
 		<NavItem icon={GiPerson} link={{to: "/hero", activeOptions: {exact: true}}}>Heroes</NavItem>
-
-		{currentHero != null &&
-			<>
-				<Text
-					px={4}
-					fontSize="md"
-					marginTop={3}
-					fontWeight={700}
-				>
-					Hero Editor
-				</Text>
-
-				<NavItem icon={GiBiceps} link={{to: "/hero/stats"}}>Stats</NavItem>
-				<NavItem icon={GiBlackBook} link={{to: "/hero/background"}}>Background</NavItem>
-				<NavItem icon={GiChoice} link={{to: "/hero/classes"}}>Classes</NavItem>
-				<NavItem icon={GiDiceTarget} link={{to: "/hero/feats"}}>Feats</NavItem>
-				<NavItem icon={GiChestArmor} link={{to: "/hero/equipment"}}>Equipment</NavItem>
-				<NavItem icon={GiSchoolBag} link={{to: "/hero/inventory"}}>Inventory</NavItem>
-				<NavItem icon={GiCrystalWand} link={{to: "/hero/spells"}}>Spells</NavItem>
-			</>
-		}
 	</Box>;
 };
