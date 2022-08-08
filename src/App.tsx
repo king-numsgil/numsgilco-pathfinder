@@ -4,6 +4,7 @@ import {useRegisterSW} from "virtual:pwa-register/react";
 import {HelmetProvider} from 'react-helmet-async';
 import {FC} from "react";
 
+import {routes} from "pages";
 import {theme} from "theme";
 
 const {ToastContainer, toast} = createStandaloneToast();
@@ -36,7 +37,7 @@ export const App: FC = () => {
 		<ChakraProvider theme={theme} resetCSS>
 			<HelmetProvider>
 				<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-				<Router location={location} routes={[]}>
+				<Router location={location} routes={routes}>
 					<Outlet />
 				</Router>
 			</HelmetProvider>
