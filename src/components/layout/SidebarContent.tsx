@@ -1,17 +1,7 @@
 import {Box, BoxProps, CloseButton, Flex, Text, useColorModeValue} from "@chakra-ui/react";
+import {GiPerson, GiSwordsEmblem,} from "react-icons/gi";
 import {FiHome} from "react-icons/fi";
 import {FC} from "react";
-import {
-	GiBiceps,
-	GiBlackBook,
-	GiChestArmor,
-	GiChoice,
-	GiCrystalWand,
-	GiDiceTarget,
-	GiPerson,
-	GiSchoolBag,
-	GiSwordsEmblem,
-} from "react-icons/gi";
 
 import {NavItem} from "./NavItem";
 
@@ -42,7 +32,7 @@ export const SidebarContent: FC<SidebarContentProps> = ({onClose, ...rest}) => {
 			<CloseButton display={{base: "flex", md: "none"}} onClick={onClose} />
 		</Flex>
 		<NavItem icon={FiHome} link={{to: "/home"}}>Home</NavItem>
-		<NavItem icon={GiSwordsEmblem} link={{to: "/combat", activeOptions: {exact: true}}}>Combat Tracker</NavItem>
-		<NavItem icon={GiPerson} link={{to: "/hero", activeOptions: {exact: true}}}>Heroes</NavItem>
+		<NavItem icon={GiSwordsEmblem} link={{to: "/combat"}}>Combat Tracker</NavItem>
+		<NavItem icon={GiPerson} link={{to: "/hero"}}>Heroes</NavItem>
 	</Box>;
 };
