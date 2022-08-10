@@ -2,20 +2,27 @@ import {Outlet, Route} from "@tanstack/react-location";
 import {Helmet} from "react-helmet-async";
 import {FC} from "react";
 
+import {CombatStoreProvicer, useCombatStore} from "./CombatStore";
 import {CombatLayout} from "components/combat";
 
 const Page: FC = () => {
+	const combatStore = useCombatStore();
+
 	return <>
 		<Helmet>
 			<title>Combat Manager - Numsgil Co</title>
 		</Helmet>
-		<p>Play // Combat Manager</p>
+		<p>Play // Combat Manager {combatStore.encounterId}</p>
 	</>;
 };
 
 const route: Route = {
 	path: "combat",
-	element: <CombatLayout><Outlet /></CombatLayout>,
+	element: <CombatLayout>
+		<CombatStoreProvicer>
+			<Outlet />
+		</CombatStoreProvicer>
+	</CombatLayout>,
 	children: [
 		{
 			path: "/",
