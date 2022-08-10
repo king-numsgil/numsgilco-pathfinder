@@ -9,6 +9,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@bit-about/state": "^1.2.1",
 		"@chakra-ui/react": "^2.2.6",
 		"@emotion/react": "^11.10.0",
 		"@emotion/styled": "^11.10.0",
