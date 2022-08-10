@@ -9,7 +9,7 @@ const Page: FC = () => {
 		<Helmet>
 			<title>Combat Manager - Numsgil Co</title>
 		</Helmet>
-		<p>Combat Manager</p>
+		<p>Play // Combat Manager</p>
 	</>;
 };
 
