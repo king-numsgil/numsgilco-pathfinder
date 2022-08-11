@@ -1,17 +1,10 @@
-import {IDataBase} from "jsstore";
+import {ITable} from "jsstore";
 
 import {PartyTable} from "./PartyTable";
 
-export const CombatDb: IDataBase = {
-	name: "Combat",
-	tables: [
-		PartyTable.Definition,
-	],
-};
-
-export {
-	PartyTable,
-};
+export const CombatTables: Array<ITable> = [
+	PartyTable.Definition,
+]
 
 export * from "./PartyTable";
 
