@@ -1,13 +1,23 @@
+import {ITable, DATA_TYPE} from "jsstore";
+
 import {connection} from "../connection";
-import {ITable} from "jsstore";
+
+export interface IParty {
+	id: number;
+	name: string;
+}
 
 export class PartyTable {
 	public static Definition: ITable = {
 		name: "Party",
 		columns: {
-			Id: {
+			id: {
 				primaryKey: true,
 				autoIncrement: true,
+			},
+			name: {
+				dataType: DATA_TYPE.String,
+				unique: true,
 			},
 		},
 	};
