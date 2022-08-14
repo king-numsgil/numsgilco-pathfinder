@@ -1,10 +1,12 @@
-import {ITable, DATA_TYPE} from "jsstore";
+import {DATA_TYPE, ITable} from "jsstore";
 
 import {connection} from "../connection";
 
 export interface IParty {
 	id: number;
 	name: string;
+	currentExp: number;
+	nextLevelExp: number;
 }
 
 export class PartyService {
@@ -19,6 +21,14 @@ export class PartyService {
 				dataType: DATA_TYPE.String,
 				unique: true,
 			},
+			currentExp: {
+				dataType: DATA_TYPE.Number,
+				default: 0,
+			},
+			nextLevelExp: {
+				dataType: DATA_TYPE.Number,
+				default: 0,
+			},
 		},
 	};
 
@@ -26,33 +36,32 @@ export class PartyService {
 		return connection;
 	}
 
-	async get(id?: number): Promise<Array<IParty>> {
-		return await this.connection.select<IParty>({
-			from: PartyService.Table.name,
-			where: id === undefined ? undefined : {
-				id,
-			},
-		});
+	get(): Promise<Array<IParty>>;
+	get(id: number): Promise<IParty>;
+	async get(id?: number): Promise<Array<IParty> | IParty> {
+		if (id) {
+			return (await this.connection.select<IParty>({
+				from: PartyService.Table.name,
+				where: {
+					id,
+				},
+			}))[0];
+		} else {
+			return await this.connection.select<IParty>({
+				from: PartyService.Table.name,
+			});
+		}
 	}
 
-	async add(value: Omit<IParty, "id">): Promise<IParty> {
+	async set(value: {id?: number} & Omit<IParty, "id">): Promise<IParty> {
 		const data = await this.connection.insert<IParty>({
 			into: PartyService.Table.name,
 			values: [value],
 			return: true,
+			upsert: true,
 		});
 
 		// @ts-ignore
 		return data[0];
-	}
-
-	async update(value: {id: number;} & Partial<Omit<IParty, "id">>): Promise<void> {
-		await this.connection.update({
-			in: PartyService.Table.name,
-			where: {id: value.id},
-			set: {
-				name: value.name,
-			},
-		});
 	}
 }
