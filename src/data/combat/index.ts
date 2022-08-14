@@ -1,12 +1,12 @@
 import {ITable} from "jsstore";
 
-import {PartyMemberTable} from "./PartyMemberTable";
-import {PartyTable} from "./PartyTable";
+import {PartyMemberService} from "./PartyMemberService";
+import {PartyService} from "./PartyService";
 
 export const CombatTables: Array<ITable> = [
-	PartyMemberTable.Definition,
-	PartyTable.Definition,
+	PartyMemberService.Table,
+	PartyService.Table,
 ]
 
-export * from "./PartyMemberTable";
-export * from "./PartyTable";
+export * from "./PartyMemberService";
+export * from "./PartyService";

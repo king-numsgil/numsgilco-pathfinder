@@ -7,8 +7,8 @@ export interface IParty {
 	name: string;
 }
 
-export class PartyTable {
-	public static Definition: ITable = {
+export class PartyService {
+	public static Table: ITable = {
 		name: "Party",
 		columns: {
 			id: {
@@ -28,7 +28,7 @@ export class PartyTable {
 
 	async get(id?: number): Promise<Array<IParty>> {
 		return await this.connection.select<IParty>({
-			from: PartyTable.Definition.name,
+			from: PartyService.Table.name,
 			where: id === undefined ? undefined : {
 				id,
 			},
@@ -37,7 +37,7 @@ export class PartyTable {
 
 	async add(value: Omit<IParty, "id">): Promise<IParty> {
 		const data = await this.connection.insert<IParty>({
-			into: PartyTable.Definition.name,
+			into: PartyService.Table.name,
 			values: [value],
 			return: true,
 		});
@@ -48,7 +48,7 @@ export class PartyTable {
 
 	async update(value: {id: number;} & Partial<Omit<IParty, "id">>): Promise<void> {
 		await this.connection.update({
-			in: PartyTable.Definition.name,
+			in: PartyService.Table.name,
 			where: {id: value.id},
 			set: {
 				name: value.name,

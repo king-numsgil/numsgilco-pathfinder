@@ -12,8 +12,8 @@ export interface IPartyMember {
 	nonlethalDmg: number;
 }
 
-export class PartyMemberTable {
-	public static Definition: ITable = {
+export class PartyMemberService {
+	public static Table: ITable = {
 		name: "PartyMember",
 		columns: {
 			id: {
