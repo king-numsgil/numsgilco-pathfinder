@@ -20,13 +20,16 @@ export class PartyService {
 			name: {
 				dataType: DATA_TYPE.String,
 				unique: true,
+				notNull: true,
 			},
 			currentExp: {
 				dataType: DATA_TYPE.Number,
+				notNull: true,
 				default: 0,
 			},
 			nextLevelExp: {
 				dataType: DATA_TYPE.Number,
+				notNull: true,
 				default: 0,
 			},
 		},
