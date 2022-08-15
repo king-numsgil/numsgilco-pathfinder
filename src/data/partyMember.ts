@@ -5,6 +5,7 @@ export interface IPartyMember {
 	name: string;
 	partyId: number;
 	initiative: number;
+	initiativeRoll: number;
 	maxHealth: number;
 	nonlethalDamage: number;
 	lethalDamage: number;
@@ -17,6 +18,7 @@ export class PartyMember implements IPartyMember {
 	name!: string;
 	partyId!: number;
 	initiative!: number;
+	initiativeRoll!: number;
 	maxHealth!: number;
 	nonlethalDamage!: number;
 	lethalDamage!: number;

@@ -1,6 +1,7 @@
 import Dexie from "dexie";
 
 import {IPartyMember, PartyMember} from "./partyMember";
+import {Bestiary, IBestiary} from "./bestiary";
 import {IParty, Party} from "./party";
 
 export enum Condition {
@@ -26,6 +27,7 @@ export enum Condition {
 
 class PathfinderDatabase extends Dexie {
 	public party!: Dexie.Table<IParty, number>;
+	public bestiary!: Dexie.Table<IBestiary, number>;
 	public partyMember!: Dexie.Table<IPartyMember, number>;
 
 	constructor() {
@@ -33,10 +35,12 @@ class PathfinderDatabase extends Dexie {
 
 		this.version(1).stores({
 			partyMember: "++id, name, partyId",
+			bestiary: "++id, name",
 			party: "++id, name",
 		});
 
 		this.partyMember.mapToClass(PartyMember);
+		this.bestiary.mapToClass(Bestiary);
 		this.party.mapToClass(Party);
 	}
 }
@@ -44,4 +48,5 @@ class PathfinderDatabase extends Dexie {
 export const pfdb = new PathfinderDatabase();
 
 export * from "./partyMember";
+export * from "./bestiary";
 export * from "./party";
