@@ -1,5 +1,6 @@
-import {FiBell, FiMenu} from "react-icons/fi";
+import {FiMenu, FiCommand} from "react-icons/fi";
 import {FC, PropsWithChildren} from "react";
+import {useKBar} from "kbar";
 import {
 	Box,
 	Drawer,
@@ -61,6 +62,8 @@ interface MobileProps extends FlexProps {
 }
 
 const MobileNav: FC<MobileProps> = ({onOpen, ...rest}) => {
+	const {query} = useKBar();
+
 	return <Flex
 		ml={{base: 0, md: 60}}
 		px={{base: 4, md: 4}}
@@ -94,7 +97,8 @@ const MobileNav: FC<MobileProps> = ({onOpen, ...rest}) => {
 				size="lg"
 				variant="ghost"
 				aria-label="open menu"
-				icon={<FiBell />}
+				icon={<FiCommand />}
+				onClick={() => query.toggle()}
 			/>
 		</HStack>
 	</Flex>;
