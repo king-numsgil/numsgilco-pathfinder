@@ -2,7 +2,7 @@ import {Outlet, Route} from "@tanstack/react-location";
 import {Helmet} from "react-helmet-async";
 import {FC} from "react";
 
-import {CombatStoreProvicer, useCombatStore} from "./CombatStore";
+import {CombatStoreProvider, useCombatStore} from "./CombatStore";
 import {CombatLayout} from "components/combat";
 import {pfdb} from "../../data";
 
@@ -20,9 +20,9 @@ const Page: FC = () => {
 const route: Route = {
 	path: "combat",
 	element: <CombatLayout>
-		<CombatStoreProvicer>
+		<CombatStoreProvider>
 			<Outlet />
-		</CombatStoreProvicer>
+		</CombatStoreProvider>
 	</CombatLayout>,
 	children: [
 		{

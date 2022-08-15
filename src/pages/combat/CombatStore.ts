@@ -10,7 +10,7 @@ interface CombatStore {
 	loadParty(id: number): Promise<void>;
 }
 
-export const [CombatStoreProvicer, useCombatStore] = state<PropsWithChildren<{}>, CombatStore>((): CombatStore => {
+export const [CombatStoreProvider, useCombatStore] = state<PropsWithChildren<{}>, CombatStore>((): CombatStore => {
 	const [encounterId, setEncounterId] = useState<number>(parseInt(localStorage.getItem("encounterId") ?? "0"));
 	const [partyId, setPartyId] = useState<number>(parseInt(localStorage.getItem("partyId") ?? "0"));
 
