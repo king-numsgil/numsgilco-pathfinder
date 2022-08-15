@@ -4,7 +4,6 @@ import {FC} from "react";
 
 import {CombatStoreProvicer, useCombatStore} from "./CombatStore";
 import {CombatLayout} from "components/combat";
-import {connection} from "data";
 
 const Page: FC = () => {
 	const combatStore = useCombatStore();
@@ -13,7 +12,7 @@ const Page: FC = () => {
 		<Helmet>
 			<title>Combat Manager - Numsgil Co</title>
 		</Helmet>
-		<p>Play // Combat Manager {combatStore.encounterId} {connection.isWorker ? "Worker On" : "Worker Off"}</p>
+		<p>Play // Combat Manager {combatStore.encounterId}</p>
 	</>;
 };
 
