@@ -4,7 +4,7 @@ import {FC} from "react";
 
 import {CombatStoreProvider, useCombatStore} from "./CombatStore";
 import {CombatLayout} from "components/combat";
-import {pfdb} from "../../data";
+import {pfdb} from "data";
 
 const Page: FC = () => {
 	const combatStore = useCombatStore();
@@ -13,7 +13,7 @@ const Page: FC = () => {
 		<Helmet>
 			<title>Combat Manager - Numsgil Co</title>
 		</Helmet>
-		<p>Play // Combat Manager {combatStore.partyId} {pfdb.isOpen() ? "Opened" : "Closed"}</p>
+		<p>Play // Combat Manager {combatStore.party?.name} {pfdb.isOpen() ? "Opened" : "Closed"}</p>
 	</>;
 };
 
