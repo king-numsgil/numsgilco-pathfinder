@@ -13,7 +13,7 @@ const Page: FC = () => {
 		<Helmet>
 			<title>Combat Manager - Numsgil Co</title>
 		</Helmet>
-		<p>Play // Combat Manager {combatStore.encounterId} {pfdb.isOpen() ? "Opened" : "Closed"}</p>
+		<p>Play // Combat Manager {combatStore.partyId} {pfdb.isOpen() ? "Opened" : "Closed"}</p>
 	</>;
 };
 
