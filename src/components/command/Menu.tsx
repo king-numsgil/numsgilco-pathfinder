@@ -1,44 +1,45 @@
 import {KBarAnimator, KBarPortal, KBarPositioner, KBarResults, KBarSearch, useMatches} from "kbar";
-import {chakra, useColorModeValue, Text} from "@chakra-ui/react";
+import {chakra, Text, useColorModeValue} from "@chakra-ui/react";
 import {FC} from "react";
+
+import {useNavActions, useThemeActions} from "./Actions";
 
 const ChakraBarPositioner = chakra(KBarPositioner);
 const ChakraBarAnimator = chakra(KBarAnimator);
 const ChakraBarSearch = chakra(KBarSearch);
 
-export const Menu: FC = () => {
-	const RenderResults: FC = () => {
-		const {results} = useMatches();
+const RenderResults: FC = () => {
+	const {results} = useMatches();
 
-		return <KBarResults
-			items={results}
-			onRender={({item, active}) =>
-				typeof item === "string" ? (
-					<Text
-						p="8px 16px"
-						fontSize="10px"
-						textTransform="uppercase"
-						opacity={active ? 1 : 0.75}
-						background={active ? useColorModeValue("gray.400", "gray.500") : "inherit"}
-						decoration="underline"
-					>
-						{item}
-					</Text>
-				) : (
-					<Text
-						p="8px 16px"
-						fontSize="10px"
-						textTransform="uppercase"
-						opacity={active ? 1 : 0.75}
-						background={active ? useColorModeValue("gray.400", "gray.500") : "inherit"}
-						cursor="pointer"
-					>
-						{item.name}
-					</Text>
-				)
-			}
-		/>;
-	}
+	return <KBarResults
+		items={results}
+		onRender={({item, active}) =>
+			typeof item === "string" ? <Text
+				p="8px 16px"
+				fontSize="10px"
+				textTransform="uppercase"
+				opacity={active ? 1 : 0.75}
+				background={active ? useColorModeValue("gray.400", "gray.500") : "inherit"}
+				decoration="underline"
+			>
+				{item}
+			</Text> : <Text
+				p="8px 16px"
+				fontSize="10px"
+				textTransform="uppercase"
+				opacity={active ? 1 : 0.75}
+				background={active ? useColorModeValue("gray.400", "gray.500") : "inherit"}
+				cursor="pointer"
+			>
+				{item.name}
+			</Text>
+		}
+	/>;
+}
+
+export const Menu: FC = () => {
+	useNavActions();
+	useThemeActions();
 
 	return <KBarPortal>
 		<ChakraBarPositioner>
