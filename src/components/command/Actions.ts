@@ -17,14 +17,13 @@ export const Actions: Array<Action> = [
 		section: "",
 		parent: "dbclear",
 		perform() {
-			pfdb
-				.open()
+			pfdb.open()
 				.then(db => db.delete())
 				.then(() => pfdb.open())
 				.then(db => db.isOpen() ? alert("IDB Cleared and reopened") : alert("Something's wrong..."))
 				.catch(console.error);
 		},
-	}
+	},
 ];
 
 export function useThemeActions() {

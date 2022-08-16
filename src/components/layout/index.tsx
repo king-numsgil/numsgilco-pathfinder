@@ -1,4 +1,4 @@
-import {FiMenu, FiCommand} from "react-icons/fi";
+import {FiCommand, FiMenu} from "react-icons/fi";
 import {FC, PropsWithChildren} from "react";
 import {useKBar} from "kbar";
 import {

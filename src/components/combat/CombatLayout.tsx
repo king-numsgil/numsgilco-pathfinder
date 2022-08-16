@@ -1,7 +1,7 @@
 import {FC, PropsWithChildren} from "react";
 import {Flex} from "@chakra-ui/react";
 
-import {SubNavGroup, SubNavButton} from "components/SubNavButton";
+import {SubNavButton, SubNavGroup} from "components/SubNavButton";
 import {DiceFormula} from "components/DiceFormula";
 
 export const CombatLayout: FC<PropsWithChildren<{}>> = ({children}) => {

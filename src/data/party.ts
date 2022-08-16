@@ -1,4 +1,4 @@
-import {IBestiary, Condition} from "./index";
+import {Condition, IBestiary} from "./index";
 
 export type Combatant = Omit<IBestiary, "id"> & {
 	initiativeRoll: number;
