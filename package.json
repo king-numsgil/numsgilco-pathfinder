@@ -10,14 +10,14 @@
 	},
 	"dependencies": {
 		"@bit-about/state": "^1.2.1",
-		"@chakra-ui/react": "^2.2.8",
-		"@emotion/react": "^11.10.0",
-		"@emotion/styled": "^11.10.0",
+		"@chakra-ui/react": "^2.3.1",
+		"@emotion/react": "^11.10.4",
+		"@emotion/styled": "^11.10.4",
 		"@tanstack/react-location": "^3.7.4",
 		"dexie": "^3.2.2",
 		"dexie-react-hooks": "^1.1.1",
 		"dice-typescript": "^1.6.1",
-		"framer-motion": "^7.2.0",
+		"framer-motion": "^7.2.1",
 		"kbar": "^0.1.0-beta.36",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
@@ -27,13 +27,13 @@
 		"tslib": "^2.4.0"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.9",
-		"@types/react": "^18.0.17",
+		"@types/node": "^18.7.15",
+		"@types/react": "^18.0.18",
 		"@types/react-dom": "^18.0.6",
-		"@vitejs/plugin-react": "^2.0.1",
+		"@vitejs/plugin-react": "^2.1.0",
 		"typescript": "^4.7.4",
-		"vite": "^3.0.9",
-		"vite-plugin-pwa": "^0.12.3",
+		"vite": "^3.1.0",
+		"vite-plugin-pwa": "^0.12.6",
 		"vite-tsconfig-paths": "^3.5.0"
 	}
 }
